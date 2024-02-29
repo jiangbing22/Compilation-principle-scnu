@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "token算法实现", "token算法实现\token算法实现.vcxproj", "{60F92F43-3815-4766-9270-C01A1D2764B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Debug|x64.ActiveCfg = Debug|x64
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Debug|x64.Build.0 = Debug|x64
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Debug|x86.ActiveCfg = Debug|Win32
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Debug|x86.Build.0 = Debug|Win32
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Release|x64.ActiveCfg = Release|x64
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Release|x64.Build.0 = Release|x64
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Release|x86.ActiveCfg = Release|Win32
+		{60F92F43-3815-4766-9270-C01A1D2764B7}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {77EE242A-C998-4C56-A4CF-CD31769597E2}
+	EndGlobalSection
+EndGlobal
