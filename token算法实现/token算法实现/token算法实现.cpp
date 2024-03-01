@@ -1,21 +1,30 @@
 ﻿#include <iostream>
 #include <string>
 #include<unordered_set>
+#include<vector>
+#include<regex>
 using namespace std;
 
 /* 单词编码 */
+
 enum TokenCode
 {
-	UNDEF=0,
-	KEYWORD,
-	OPERATOR,
-	IDENTIFIER,
-	COMMENT,
-	PUNCTUATION,
+    UNDEF = 0,
+    KEYWORD,
+    OPERATOR,
+    IDENTIFIER,
+    COMMENT,
+    DELIMITER ,
 	INT,
 	FLOAT,
 	CHAR,
 	STRING,
+};
+struct TOKEN
+{
+    string word;
+    TokenCode code;
+    TOKEN(string a, TokenCode b) :word(a), code(b) {};
 };
 const std::unordered_set<std::string> keywords = {
     "alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto",
@@ -29,9 +38,17 @@ const std::unordered_set<std::string> keywords = {
     "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "unsigned", "using",
     "virtual", "void", "volatile", "wchar_t", "while", "xor", "xor_eq"
 };
+const std::unordered_set<char> operators = { '+', '-', '*', '/', '=', '!', '<', '>', '&', '|', '^', '%' };
+const std::unordered_set<char> delimiters = { '(', ')', '{', '}', '[', ']', ',', ';', '.', ':','#'};
 
 bool isKeyword(const std::string& word) {
     return keywords.find(word) != keywords.end();
+}
+bool isOperator(const char word) {
+    return operators.find(word) != operators.end();
+}
+bool isDelimiter (const char word) {
+    return delimiters.find(word) != delimiters.end();
 }
 string to_chinese(TokenCode key)
 {
@@ -52,8 +69,8 @@ string to_chinese(TokenCode key)
     case COMMENT:
         return "注释";
         break;
-    case PUNCTUATION:
-        return "标点符号";
+    case DELIMITER:
+        return "分界符";
         break;
     case INT:
         return "整数";
@@ -86,30 +103,85 @@ bool isDigit(char digit)
     return false;
 }
 
-string scan(string code)
+vector<TOKEN> scan(string code)
 {
-    string token="";
-    string result = "";
+    string tokenstring;
+    vector<TOKEN> result;
     auto it = code.begin();
     while (it != code.end())
     {
         char ch = *it;
-        if (ch == ' ')
+        if (ch == ' '||ch=='\n'||ch=='\t')
         {
+            it++;
             continue;
         }
        else if (isLetter(ch))
         {
-            token + ch;
-            ch++;
+            tokenstring = "";
+            while (isLetter(ch))
+            {
+                tokenstring.push_back(ch);
+                it++;
+                ch = *it;
+            }
+            if (isKeyword(tokenstring))
+            {
+                TOKEN token(tokenstring, KEYWORD);
+                result.push_back(token);
+
+            }
+            else
+            {
+                TOKEN token(tokenstring, IDENTIFIER);
+                result.push_back(token);
+            }
         }
        else if (isDigit(ch))
         {
-
+            bool isfloat=false;
+            tokenstring = "";
+            while (isDigit(ch))
+            {
+                tokenstring.push_back(ch);
+                it++;
+                ch = *it;
+                if (ch == '.' && !isfloat)
+                {
+                    isfloat = true;
+                    tokenstring.push_back(ch);
+                    it++;
+                    ch = *it;
+                }
+            }
+            if (isfloat)
+            {
+                TOKEN token(tokenstring, FLOAT);
+                result.push_back(token);
+            }
+            else
+            {
+                TOKEN token(tokenstring, INT);
+                result.push_back(token);
+            }
+            
         }
-       else
+       else if(isDelimiter(ch))
         {
-
+            tokenstring = ch;
+            TOKEN token(tokenstring, OPERATOR);
+            result.push_back(token);
+            it++;
+        }
+       else if (isOperator(ch))
+        {
+            tokenstring ="";
+            if (ch == '/')
+            {
+                regex regexComment("//.*|/\\*.*?\\*/|/\\*\\*.*?\\*/",regex::ECMAScript);
+                sregex_iterator r_it(it, code.end(), regexComment);
+                sregex_iterator end;
+            }
         }
     }
     return result;
