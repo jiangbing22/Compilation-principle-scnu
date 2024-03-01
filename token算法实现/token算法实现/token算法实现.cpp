@@ -107,7 +107,7 @@ vector<TOKEN> scan(string code)
 {
     string tokenstring;
     vector<TOKEN> result;
-    auto it = code.begin();
+    string::const_iterator it = code.begin();
     while (it != code.end())
     {
         char ch = *it;
@@ -175,14 +175,43 @@ vector<TOKEN> scan(string code)
         }
        else if (isOperator(ch))
         {
-            tokenstring ="";
+            tokenstring = "";
             if (ch == '/')
             {
-                regex regexComment("//.*|/\\*.*?\\*/|/\\*\\*.*?\\*/",regex::ECMAScript);
-                sregex_iterator r_it(it, code.end(), regexComment);
-                sregex_iterator end;
+                regex regexComment("//.*|/\\*.*?\\*/", regex::ECMAScript); // 修改正则表达式以匹配单行和多行注释
+                smatch re_result;
+                string::const_iterator iterStart = it;
+                string::const_iterator iterEnd = code.end();
+                if (regex_search(iterStart, iterEnd, re_result, regexComment))
+                {
+                    TOKEN token(re_result[0], COMMENT);
+                    result.push_back(token);
+                    it = re_result[0].second;
+                }
+                else
+                {
+                    tokenstring = ch;
+                    TOKEN token(tokenstring, OPERATOR); 
+                    result.push_back(token);
+                    ++it;
+                }
+            }
+            else 
+            {
+                while (isOperator(ch))
+                {
+                    tokenstring.push_back(ch);
+                    it++;
+                    ch = *it;
+                }
+                TOKEN token(tokenstring, OPERATOR);
+                result.push_back(token);
             }
         }
-    }
+       else if(isDelimiter(ch))
+        {
+            
+
+
     return result;
 }
