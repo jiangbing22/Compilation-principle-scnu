@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="token算法实现.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="code.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
