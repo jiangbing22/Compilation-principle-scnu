@@ -1,22 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include<iostream.h>
-main()
-{
-   int i;
-   cin>>i;  /* integer input */
-   if (i>3.7) cout<<“ok”;
-}
-// Your tokenization code here...
 
-int main() {
-    std::ifstream file("example_code.txt"); // 打开文件
-    if (!file.is_open()) {
-        std::cerr << "无法打开文件。" << std::endl;
+        std::cerr << "can not open" << std::endl;
         return 1;
-    }
 
     std::string code;
     std::string line;
@@ -24,14 +8,15 @@ int main() {
         code += line + "\n"; // 将每行追加到代码字符串中
     }
 
-    file.close(); // 关闭文件
+    file.close();
+    std::cout << code;
 
     // 对代码进行标记
-    std::vector<TOKEN> tokens = scan(code);
+    std::vector<token::TOKEN> tokens = token::scan(code);
 
     // 输出标记
     for (const auto& token : tokens) {
-        std::cout << "mark: " << token.word << ", type: " << to_chinese(token.code) << std::endl;
+        std::cout << "标记: " << token.word << ", 类型: " << to_chinese(token.code) << std::endl;
     }
 
     return 0;
