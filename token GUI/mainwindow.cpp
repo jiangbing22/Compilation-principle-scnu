@@ -3,9 +3,6 @@
 #include"QFileDialog"
 #include <QString>
 #include <string>
-#include<iostream>
-#include <iostream>
-#include <string>
 #include<unordered_set>
 #include<vector>
 #include<regex>
