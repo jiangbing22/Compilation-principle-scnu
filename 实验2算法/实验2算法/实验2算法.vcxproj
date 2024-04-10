@@ -130,8 +130,8 @@
     <ClInclude Include="to_DFA.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DFA.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="to_DFA.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

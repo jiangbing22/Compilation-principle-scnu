@@ -18,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "token\u7B97\u6CD5\u5B9E\u73B0.cpp",
+              "DocumentMoniker": "C:\\Users\\xinwei\\Desktop\\code\\Compilation-principle-scnu\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
+              "RelativeDocumentMoniker": "token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
+              "ToolTip": "C:\\Users\\xinwei\\Desktop\\code\\Compilation-principle-scnu\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
+              "RelativeToolTip": "token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
+              "ViewState": "AQIAAMoAAAAAgGqvqvPBv7YAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-01T06:33:41.821Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
@@ -38,21 +51,7 @@
               "RelativeToolTip": "token\u7B97\u6CD5\u5B9E\u73B0\\code.txt",
               "ViewState": "AQIAAAAAAACAWaAHRasUwAkAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-03-01T07:06:55.692Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "token\u7B97\u6CD5\u5B9E\u73B0.cpp",
-              "DocumentMoniker": "C:\\Users\\xinwei\\Desktop\\code\\Compilation-principle-scnu\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
-              "RelativeDocumentMoniker": "token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
-              "ToolTip": "C:\\Users\\xinwei\\Desktop\\code\\Compilation-principle-scnu\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
-              "RelativeToolTip": "token\u7B97\u6CD5\u5B9E\u73B0\\token\u7B97\u6CD5\u5B9E\u73B0.cpp",
-              "ViewState": "AQIAALMAAAAAAAAAAAAqwMUAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-03-01T06:33:41.821Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-01T07:06:55.692Z"
             }
           ]
         }
