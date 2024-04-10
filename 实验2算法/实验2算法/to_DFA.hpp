@@ -8,22 +8,17 @@ class RE {
 public:
     RE(string initial) : re(initial) {
         init();
-        to_post();
+        /*to_post();*/
     };
-
-    RE() {}
-
     void init();
     string get_post() { return re_post; };
     string get_re() { return re; };
-
 private:
     unordered_map<char, int> prior = {
         {'*', 100}, {'+', 100}, {'?', 100}, {'.', 80}, {'|', 60}, {'@', 70}
     };
     string re;
     string re_post;
-
     void to_post();
 };
 
@@ -31,7 +26,12 @@ void RE::init() {
     string result = "";
     string regex = re;
     for (size_t i = 0; i < regex.length(); i++) {
-        result += regex[i];
+
+        if (regex[i] != '[')
+        {
+            result += regex[i];
+        } 
+
         if (i == regex.length() - 1)
         {
             break;
@@ -44,9 +44,21 @@ void RE::init() {
                 result.push_back('@');
             }
         }
-        
-        
-
+        if (regex[i] == '[')
+        {
+            i++;
+            result.push_back('(');
+            while(regex[i] != ']')
+            {
+                result.push_back(regex[i]);
+                if (regex[i + 1] != ']')
+                {
+                    result.push_back('|');
+                }
+                i++;
+            }
+            result.push_back(')');
+        }
     }
     re = result;
 }
@@ -66,6 +78,10 @@ void RE::to_post() {
             
             postfix += c;
             
+        }
+        else if (c == '\\')
+        {
+            postfix +='\\';
         }
         else if (c == '(') {
             operators.push(c);
@@ -94,67 +110,194 @@ void RE::to_post() {
     re_post = postfix;
 }
 
-//struct  NFA_node
-//{
-//    int index; //状态号
-//    char input;//边上的值
-//    int Trans;//弧转移状态号
-//    set<int> epTrans;//3转移状态号集合
-//
-//};
 
-
-class NFA
+class NFA_graph
 {
 public:
-    void build_NFA();
-    
-    
-
-
-private:
-    struct NFA_graph
+    NFA_graph()
     {
-    public:
-        NFA_graph()
+        Graph.resize(1);
+        start = end = 0;
+    }
+    void init(char a);
+    
+    size_t size() const
+    {
+        return Graph.size();
+    }
+    unordered_map<char, vector<int>>& operator[](int n)
+    {
+        if (n < Graph.size())
         {
-            Graph.resize(1);
-            start = end = 0;
+            return Graph[n];
         }
-        size_t size() const
+        else
         {
-            return Graph.size();
+            Graph.resize(n);
+            return Graph[n];
         }
-        unordered_map<char, vector<int>>& operator[](int n)
-        {
-            if (n < Graph.size())
-            {
-                return Graph[n];
-            }
-        }
-        NFA_graph& operator+=(NFA_graph b)
-        {
-            int offset = size();
-            for (int i = 0; i < b.size(); ++i)
-            {
-                Graph.push_back(b[i]);
-                for (auto& k : Graph.back())
-                    for (auto& v : k.second)
-                        v += offset;
-            }
-            return *this;
-        }
-        vector<unordered_map<char, vector<int>>> Graph;
-        int start, end;
-    };
-    stack<NFA_graph> stk;
-
+   
+    }
+    
+    NFA_graph& operator&(NFA_graph& b);
+    NFA_graph& operator|(NFA_graph& b);
+    NFA_graph& operator*();
+    NFA_graph& operator+();
+    NFA_graph& optional();
+    NFA_graph build_NFA(RE regex);
+private:
+    vector<unordered_map<char, vector<int>>> Graph;
+    int start, end;
+    void contact(NFA_graph& b);
 };
-void NFA::build_NFA()
-{
 
+void NFA_graph::contact(NFA_graph& b)
+{
+    int offset = size();
+    for (int i = 0; i < b.size(); ++i)
+    {
+        Graph.push_back(b[i]);
+        for (auto& k : Graph.back())
+            for (auto& v : k.second)
+                v += offset;
+    }
+    b.start += offset;
+    b.end += offset;
+    return;
+}
+NFA_graph& NFA_graph::operator&(NFA_graph& b)
+{
+    contact(b);
+    this->Graph[this->end]['$'].push_back(b.start);
+    this->end = b.end;
+
+    return *this;
+}
+NFA_graph& NFA_graph::operator|(NFA_graph& b)
+{
+    contact(b);
+    //插入新的开始节点
+    unordered_map<char, vector<int>> newstart;
+    newstart['$'].push_back(this->start);
+    newstart['$'].push_back(b.start);
+    Graph.push_back(newstart);
+    this->start = Graph.size()-1;
+
+    //插入新的结尾节点
+    unordered_map<char, vector<int>> newend;
+    Graph.push_back(newend);
+    this->Graph[this->end]['$'].push_back(Graph.size()-1);
+    this->Graph[b.end]['$'].push_back(Graph.size()-1);
+    this->end = Graph.size()-1;
+
+    return *this;
+}
+NFA_graph& NFA_graph::operator*()
+{
+    Graph[this->end]['$'].push_back(this->start);
+    int old_start = this->start;
+    int old_end = this->end;
+
+    unordered_map<char, vector<int>> newstart;
+    Graph.push_back(newstart);
+    this->start = Graph.size() - 1;
+    unordered_map<char, vector<int>> newend;
+    Graph.push_back(newend);
+    this->end = Graph.size() - 1;
+
+    Graph[this->start]['$'].push_back(this->end);
+    Graph[this->start]['$'].push_back(old_start);
+    Graph[old_end]['$'].push_back(this->end);
+
+    return *this;
+} 
+NFA_graph& NFA_graph::operator+()
+{
+    NFA_graph temp= *this;
+    temp = temp & (*temp);
+    return temp;
+}
+NFA_graph& NFA_graph::optional()
+{
+    Graph[this->start]['$'].push_back(this->end);
+    return *this;
 }
 
+void NFA_graph::init(char a)
+{
+    Graph.resize(2);
+    this->end = 1;
+    this->start = 0;
+    Graph[0][a] = { this->end };
+}
+NFA_graph NFA_graph::build_NFA(RE re)
+{
+    stack<NFA_graph> stk;
+    string regex = re.get_post();
+    for (auto c : regex)
+    {
+        if (isalpha(c))
+        {
+            NFA_graph temp;
+            temp.init(c);
+            stk.emplace(temp);
+        }
+        else
+        {
+            switch (c)
+            {
+            case '&':
+            {
+                NFA_graph graph1 = stk.top();
+                stk.pop();
+                NFA_graph graph2 = stk.top();
+                stk.pop();
+                NFA_graph result = graph1 & graph2;
+                stk.push(result);
+                break;
+            }
+
+            case '|':
+            {
+                NFA_graph graph1 = stk.top();
+                stk.pop();
+                NFA_graph graph2 = stk.top();
+                stk.pop();
+                NFA_graph result = graph1 | graph2;
+                stk.push(result);
+                break;
+            }
+            case '*':
+            {
+                NFA_graph graph1 = stk.top();
+                stk.pop();
+                NFA_graph result = *graph1;
+                stk.push(result);
+                break;
+            }
+            case '+':
+            {
+                NFA_graph graph1 = stk.top();
+                stk.pop();
+                NFA_graph result = +graph1;
+                stk.push(result);
+                break;
+            }
+            case '?':
+            {
+                NFA_graph graph1 = stk.top();
+                stk.pop();
+                NFA_graph result = graph1.optional();
+                stk.push(result);
+                break;
+            }
+            }
+                
+        }
+    }
+    NFA_graph result = stk.top();
+    return result;
+}
 
 
 class DFA
@@ -168,9 +311,5 @@ private:
 
 
 };
-std::string NFA::re_post(std::string re)
-{
-    string a;
-        return  a;
-}
+
 
