@@ -380,6 +380,7 @@ public:
     void minimize();
     int get_start() { return start; };
     set<int> get_end() { return end; };
+    set<int> get_minimize_end() { return minimize_end; };
     DFA_GRAPH get_Graph() { return Graph; };
     void init(char a); 
     size_t size() const
@@ -389,11 +390,13 @@ public:
 
     unordered_map<string, int> state_map;//判断集合是否已经存在
     unordered_set<char> get_key() { return DFA_key_set; };
+    unordered_map<int, unordered_map<char, vector<int>>> get_minimizeGraph(){ return minimizeGraph; };
 private:
     int start;
     set<int> end;
     DFA_GRAPH Graph;
-    vector<unordered_map<char,int>> minimizeGraph;
+    set<int> minimize_end;
+    unordered_map<int,unordered_map<char,vector<int>>> minimizeGraph;
     unordered_set<char> DFA_key_set;
     string vectorToString(vector<int>& t)
     {
@@ -546,7 +549,8 @@ void DFA_graph::build_from_NFA(NFA_graph NFA)
 };
 void DFA_graph::minimize()
 {
-    //找出集合划分
+    minimizeGraph.clear();
+    minimize_end.clear();
     set<int> end_set_index = this->end;
     set<int> else_set_index;//非终态集合
     for (auto i : state_map)//初始化终态集合
@@ -580,13 +584,30 @@ void DFA_graph::minimize()
         partition_graph.push_back(result);
     }
     unordered_map<string, bool>p_map;
-    for (auto map : partition_graph)
+    set<int> partition_tag;
+    for (int i=0;i<partition_graph.size();i++)
     {
-        string map_key = mapToString(map);
+        string map_key = mapToString(partition_graph[i]);
         if (!p_map[map_key])
         {
-            this->minimizeGraph.push_back(map);
-            p_map[map_key] = true;
+            partition_tag.insert(i);
+        }
+        
+    }
+    for (int i = 0; i < this->Graph.size(); i++)
+    {
+        if (partition_tag.find(i) == partition_tag.end())
+        {
+            continue;
+        }
+        if (end_set_index.find(i) != end_set_index.end())
+        {
+            this->minimize_end.insert(i);
+        }
+        auto t_map = Graph[i].second;//复制一份
+        for (auto key : DFA_key_set)
+        {
+            minimizeGraph[i][key] = t_map[key];
         }
     }
     return;

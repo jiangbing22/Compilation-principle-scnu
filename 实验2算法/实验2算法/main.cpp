@@ -68,7 +68,27 @@ void print_DFA(DFA_graph DFA, NFA_graph NFA)
 	}
 
 }
-
+void print_minimize(DFA_graph DFA)
+{
+	auto result = DFA.get_minimizeGraph();
+	cout << "state_graph:  ";
+	cout << "start:" << 0 << " end:";
+	for (auto a : DFA.get_minimize_end())
+	{
+		cout << a << " ";
+	}
+	cout << endl;
+	for (auto i : result)
+	{
+		if (i.second.empty())
+		{
+			continue;
+		}
+		cout << "node:" << i.first<<" ";
+		cout << " vertex: ";
+		cout << "arrive: ";
+	}
+}
 int main()
 {
 	string init;
