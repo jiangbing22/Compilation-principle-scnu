@@ -1,32 +1,34 @@
 ﻿  main.cpp
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(173,16): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(159,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(201,31): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(233,31): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(206,55): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(206,55): warning C4267:         with
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(206,55): warning C4267:         [
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(206,55): warning C4267:             _Ty=int
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(206,55): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(238,55): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(238,55): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(238,55): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(238,55): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(238,55): warning C4267:         ]
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(207,51): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(207,51): warning C4267:         with
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(207,51): warning C4267:         [
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(207,51): warning C4267:             _Ty=int
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(207,51): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(239,51): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(239,51): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(239,51): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(239,51): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(239,51): warning C4267:         ]
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(208,29): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(240,29): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(220,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(252,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(223,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(256,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(235): warning C4172: 返回局部变量或临时变量的地址: temp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\实验2算法\to_DFA.hpp(528,70): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
   实验2算法.vcxproj -> C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验2算法\x64\Debug\实验2算法.exe
