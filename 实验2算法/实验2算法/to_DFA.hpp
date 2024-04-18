@@ -390,13 +390,13 @@ public:
 
     unordered_map<string, int> state_map;//判断集合是否已经存在
     unordered_set<char> get_key() { return DFA_key_set; };
-    unordered_map<int, unordered_map<char, vector<int>>> get_minimizeGraph(){ return minimizeGraph; };
+    unordered_map<int, unordered_map<char, int>> get_minimizeGraph(){ return minimizeGraph; };
 private:
     int start;
     set<int> end;
     DFA_GRAPH Graph;
     set<int> minimize_end;
-    unordered_map<int,unordered_map<char,vector<int>>> minimizeGraph;
+    unordered_map<int,unordered_map<char,int>> minimizeGraph;
     unordered_set<char> DFA_key_set;
     string vectorToString(vector<int>& t)
     {
@@ -441,7 +441,9 @@ private:
         string res;
         for (const auto& p : mp) {
             res += p.first;
+            res += ':';
             res += to_string(p.second);
+            res += " ";
         }
         return res;
     }
@@ -570,44 +572,76 @@ void DFA_graph::minimize()
         {
             if (t_map[key].empty())
             {
-                result[key] = -1;
+                result[key] = -1;//不存在
             }
             else if (end_set_index.find(state_map[vectorToString(t_map[key])]) != end_set_index.end())//在终态集合中
             {
-                result[key] = true;
+                result[key] = true;//在终态中
             }
             else
             {
-                result[key] = false;
+                result[key] = false;//不在终态中
             }
         }
         partition_graph.push_back(result);
     }
     unordered_map<string, bool>p_map;
     set<int> partition_tag;
+    unordered_map<int,int>index_map;
     for (int i=0;i<partition_graph.size();i++)
     {
         string map_key = mapToString(partition_graph[i]);
-        if (!p_map[map_key])
+        cout <<i<<" " << map_key << " " << endl;
+        if (p_map.find(map_key)==p_map.end())
         {
+            p_map[map_key] = i;
             partition_tag.insert(i);
+            /*cout << i << " ";*/
+        }
+        else
+        {
+            index_map[i] = p_map[map_key];
         }
         
     }
-    for (int i = 0; i < this->Graph.size(); i++)
+    for (auto i : end_set_index)//找到最小化后DFA的终点
+    {
+        if (index_map.find(i) != index_map.end())
+        {
+            minimize_end.insert(index_map[i]);
+        }
+        else
+        {
+            minimize_end.insert(i);
+        }
+    }
+    for (auto i: partition_tag)
     {
         if (partition_tag.find(i) == partition_tag.end())
         {
             continue;
         }
-        if (end_set_index.find(i) != end_set_index.end())
-        {
-            this->minimize_end.insert(i);
-        }
+
         auto t_map = Graph[i].second;//复制一份
         for (auto key : DFA_key_set)
         {
-            minimizeGraph[i][key] = t_map[key];
+            if (!t_map[key].empty())
+            {
+                int index = state_map[vectorToString(t_map[key])];
+                
+                if (index_map.find(index) != index_map.end())
+                {
+                    minimizeGraph[i][key]=index_map[index];
+                }
+                else
+                {
+                    minimizeGraph[i][key] = index;
+                }
+            }
+            else
+            {
+                minimizeGraph[i][key] = -1;
+            }
         }
     }
     return;

@@ -56,8 +56,8 @@ void print_DFA(DFA_graph DFA, NFA_graph NFA)
 		}
 		for (auto c : a.second)
 		{
-			cout << "vertex:" << c.first << " ";
-			cout << "arrive:";
+			cout << "vertex:" << c.first << "   ";
+			cout << "arrive:  ";
 			for (auto c : a.second[c.first])
 			{
 				cout << c << " ";
@@ -85,8 +85,15 @@ void print_minimize(DFA_graph DFA)
 			continue;
 		}
 		cout << "node:" << i.first<<" ";
-		cout << " vertex: ";
-		cout << "arrive: ";
+		for (auto j : i.second)
+		{
+			cout << " vertex: "<<j.first<<" ";
+			cout << "arrive: ";
+			
+			cout << j.second << " ";
+			
+		}
+		cout << endl;
 	}
 }
 int main()
@@ -103,6 +110,9 @@ int main()
 	cout << "-------------------------" << endl;
 	DFA.build_from_NFA(NFA);
 	print_DFA(DFA, NFA);
+	cout << "-------------------------" << endl;
+	DFA.minimize();
+	print_minimize(DFA);
 
 
 }
