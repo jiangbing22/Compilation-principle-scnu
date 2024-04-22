@@ -42,7 +42,7 @@ void RE::init() {
         {
             break;
         }
-        if (calculator.find(regex[i])==calculator.end() || regex[i] == '*' || regex[i] == '+' || regex[i] == '?' || regex[i] == ')')
+        if (calculator.find(regex[i])==calculator.end() || regex[i] == '*' || regex[i] == '+' || regex[i] == '?' || regex[i] == ')' || regex[i] == ']')
         {
             
             if (calculator.find(regex[i+1]) == calculator.end() || regex[i + 1] == '('||regex[i+1]=='['||regex[i+1]=='\\')
@@ -89,7 +89,7 @@ void RE::init() {
             result += regex[i + 1];
             if (i + 2 < regex.length())
             {
-                if (isalpha(regex[i + 2]) || regex[i + 2] == '('||regex[i+2]=='\\')
+                if (calculator.find(regex[i + 2])==calculator.end() || regex[i + 2] == '(' || regex[i + 2] == '\\')
                 {
                     result.push_back('&');
                 }
@@ -585,7 +585,7 @@ void DFA_graph::minimize()
         }
         partition_graph.push_back(result);
     }
-    unordered_map<string, bool>p_map;
+    unordered_map<string, int>p_map;
     set<int> partition_tag;
     unordered_map<int,int>index_map;
     for (int i=0;i<partition_graph.size();i++)
@@ -600,6 +600,7 @@ void DFA_graph::minimize()
         }
         else
         {
+            /*cout << i << " " << p_map[map_key] << endl;*/
             index_map[i] = p_map[map_key];
         }
         

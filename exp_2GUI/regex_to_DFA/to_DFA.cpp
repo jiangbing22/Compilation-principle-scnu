@@ -59,7 +59,7 @@ void RE::init() {
             result += regex[i + 1];
             if (i + 2 < regex.length())
             {
-                if (isalpha(regex[i + 2]) || regex[i + 2] == '('||regex[i+2]=='\\')
+                if (calculator.find(regex[i + 2])==calculator.end() || regex[i + 2] == '('||regex[i+2]=='\\')
                 {
                     result.push_back('&');
                 }
@@ -159,15 +159,15 @@ NFA_graph& NFA_graph::operator*()
     Graph[this->end]['$'].push_back(this->start);
     int old_start = this->start;
     int old_end = this->end;
-    //�¿�ʼ�ڵ�
+
     unordered_map<char, vector<int>> newstart;
     Graph.push_back(newstart);
     this->start = Graph.size() - 1;
-    //�½����ڵ�
+
     unordered_map<char, vector<int>> newend;
     Graph.push_back(newend);
     this->end = Graph.size() - 1;
-    //�����հ�����
+
     Graph[this->start]['$'].push_back(this->end);
     Graph[this->start]['$'].push_back(old_start);
     Graph[old_end]['$'].push_back(this->end);
@@ -214,6 +214,10 @@ unordered_map<char, vector<int> > &NFA_graph::operator[](int n)
 }
 void NFA_graph::build_NFA(RE re)
 {
+
+    this->Graph.clear();
+    this->start=0;
+    this->end=0;
     stack<NFA_graph> stk;
     string regex = re.get_post();
     for (auto c=regex.begin();c!=regex.end();c++)
@@ -301,7 +305,10 @@ void NFA_graph::build_NFA(RE re)
 }
 void DFA_graph::build_from_NFA(NFA_graph NFA)
 {
-
+    this->DFA_key_set.clear();
+    this->Graph.clear();
+    this->end.clear();
+    state_map.clear();
     GRAPH nfa = NFA.get_graph(); //NFAͼ�Ĵ洢�ṹ
     queue<vector<int>> state_queue;//״̬������������
     set<char> key_set = NFA.getkey();//���бߵĿ���ȡֵ
@@ -393,15 +400,14 @@ void DFA_graph::minimize()
     minimizeGraph.clear();
     minimize_end.clear();
     set<int> end_set_index = this->end;
-    set<int> else_set_index;//����̬����
-    for (auto i : state_map)//��ʼ����̬����
+    set<int> else_set_index;
+    for (auto i : state_map)
     {
         if (this->end.find(i.second) != this->end.end())
         {
             else_set_index.insert(i.second);
         }
     }
-    //����DFA����״̬����ת��Ϊ����;
     vector<unordered_map<char, int>> partition_graph;//����ͼ��true��ʾ����̬������,false��ʾ���ڣ�-1��ʾ��;
     for (auto state : this->Graph)
     {
@@ -415,27 +421,35 @@ void DFA_graph::minimize()
             }
             else if (end_set_index.find(state_map[vectorToString(t_map[key])]) != end_set_index.end())//����̬������
             {
-                result[key] = true;//����̬��
+                result[key] = true;
             }
             else
             {
-                result[key] = false;//������̬��
+                result[key] = false;
             }
         }
         partition_graph.push_back(result);
     }
-    unordered_map<string, bool>p_map;
+    unordered_map<string, int>p_map;
     set<int> partition_tag;
     unordered_map<int,int>index_map;
     for (int i=0;i<partition_graph.size();i++)
     {
         string map_key = mapToString(partition_graph[i]);
+        if(end_set_index.find(i)!=end_set_index.end())
+        {
+            map_key+=" end";
+        }
+        else
+        {
+            map_key+=" else";
+        }
         cout <<i<<" " << map_key << " " << endl;
         if (p_map.find(map_key)==p_map.end())
         {
             p_map[map_key] = i;
             partition_tag.insert(i);
-            /*cout << i << " ";*/
+
         }
         else
         {
@@ -443,7 +457,7 @@ void DFA_graph::minimize()
         }
 
     }
-    for (auto i : end_set_index)//�ҵ���С����DFA���յ�
+    for (auto i : end_set_index)
     {
         if (index_map.find(i) != index_map.end())
         {

@@ -15,9 +15,6 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    RE regex;
-    DFA_graph DFA;
-    NFA_graph NFA;
     MainWindow w;
     w.show();
     return a.exec();

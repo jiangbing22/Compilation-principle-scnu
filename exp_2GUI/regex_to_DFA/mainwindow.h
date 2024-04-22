@@ -23,7 +23,19 @@ private slots:
 
     void on_load_button_clicked();
 
+    void on_to_nfa_button_clicked();
+
+    void on_exit_button_clicked();
+
+    void on_minimize_button_clicked();
+
+    void on_to_DFA_button_clicked();
+
 private:
     Ui::MainWindow *ui;
+    RE regex;
+    DFA_graph DFA;
+    NFA_graph NFA;
+    QString vectorToQString(const std::vector<int>& vec);
 };
 #endif // MAINWINDOW_H

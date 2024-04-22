@@ -38,6 +38,7 @@ private:
     string re_post;
     void to_post();
 };
+
 class NFA_graph
 {
 public:
@@ -92,6 +93,8 @@ public:
     unordered_map<string, int> state_map;//�жϼ����Ƿ��Ѿ�����
     unordered_set<char> get_key() { return DFA_key_set; };
     unordered_map<int, unordered_map<char, int>> get_minimizeGraph(){ return minimizeGraph; };
+    string vectorToString(vector<int>& t);
+    string setToString(set<int>& t);
 private:
     int start;
     set<int> end;
@@ -99,8 +102,6 @@ private:
     set<int> minimize_end;
     unordered_map<int,unordered_map<char,int>> minimizeGraph;
     unordered_set<char> DFA_key_set;
-    string vectorToString(vector<int>& t);
-    string setToString(set<int>& t);
     vector<int> stringToIntVector(string s);
     string mapToString(const unordered_map<char, int>& mp);
     pair<vector<int>,unordered_map<char, vector<int>>>& operator[](int n);
