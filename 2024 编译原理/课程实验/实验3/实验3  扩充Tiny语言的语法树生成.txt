@@ -102,3 +102,56 @@ end
 
 为了做好全面的测试，你还需要增加更多的其他相应的测试文件。
 
+更改前：
+
+program -> stmt-sequence
+stmt-sequence -> statement { ; statement }
+statement -> if-stmt | repeat-stmt | assign-stmt | read-stmt | write-stmt
+if-stmt -> if exp then stmt-sequence[else stmt-sequence] end
+repeat-stmt -> repeat stmt-sequence until exp
+assign-stmt -> identifier := exp
+read-stmt -> read identifier
+write-stmt -> write exp
+exp -> simple-exp[comparison-op simple-exp]
+comparison-op -> < | =
+simple-exp -> term {addop term}
+addop -> + | -
+term -> factor {mulop factor}
+mulop -> * | /
+factor -> (exp) | number | identifier
+
+
+
+G:
+program         -> stmt-sequence
+stmt-sequence   -> statement { ; statement }
+statement       -> if-stmt | repeat-stmt | assign-stmt | read-stmt | write-stmt | while-stmt | for-stmt | regex-stmt
+regex-stmt      -> +identifier '==' regex
+if-stmt         -> if (exp) (stmt-sequence) [ else (stmt-sequence) ]
+repeat-stmt     -> repeat stmt-sequence until exp
+assign-stmt     -> identifier ':=' exp
+read-stmt       -> read identifier
+write-stmt      -> write exp
+while-stmt      -> while (exp) stmt-sequence endwhile
+for-stmt        -> for-stmt -> for (assign-stmt; exp; self-term) (stmt-sequence)
+
+exp             -> simple-exp [comparison-op simple-exp]
+comparison-op   -> '<' | '=' | '<=' | '<>'|'>'|'>='
+simple-exp      -> term { addop term }
+addop           -> '+' | '-'
+term            -> powernum { mulop powernum }
+mulop           -> '*' | '/' | '%'
+powernum          -> factor { powerop factor }
+powerop         -> '^'
+factor         -> '(' exp ')' | number | identifier|self-term
+self-term    ->self-op identifier
+selfop          -> '++' | '--'
+
+regex           -> $concat { '|' concat }$ 
+concat          -> refactor { refactor}
+refactor 		-> reterm [ '#' | '?']
+reterm            -> rechar | rechar-class | '.' | '(' regex ')'
+rechar            -> any character except '|', '#', '?', '(', ')','[',']','+','&'
+rechar-class      -> '[' (rechar-range | rechar)* ']'
+rechar-range      -> rechar '-' rechar
+

@@ -1,0 +1,14 @@
+{ Sample program
+}
+abc := 9;
+def := 10;
+.regex == $cc[0-9]#a#(b12c)?c#|.$;
+read x; { input an integer }
+if  (0<x) ( { don't compute if x <= 0 }
+fact := 1
+);
+while( x>0 ) 
+     fact := fact * x;
+     b := --x
+endwhile;
+write fact { output factorial of x }

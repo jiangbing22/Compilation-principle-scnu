@@ -1,0 +1,7 @@
+﻿  main.cpp
+  parser.cpp
+  scaner.cpp
+  正在生成代码...
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验3算法\实验3算法\scaner.cpp(390,29): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验3算法\实验3算法\scaner.cpp(603,19): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  实验3算法.vcxproj -> C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\实验3算法\x64\Debug\实验3算法.exe

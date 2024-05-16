@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "ANALYZE.C": "cpp",
+        "CGEN.C": "cpp",
+        "CODE.C": "cpp",
+        "MAIN.C": "cpp",
+        "PARSE.C": "cpp",
+        "SCAN.C": "cpp",
+        "SYMTAB.C": "cpp",
+        "UTIL.C": "cpp"
+    }
+}
