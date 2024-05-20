@@ -1,0 +1,8 @@
+read x; { input an integer }
+if  (0<x)(   { don't compute if x <= 0 }
+  for( fact := 1; x>0;--x) (
+       fact := fact ^ x % y;
+	);
+  write fact
+  );  { output factorial of x }
+end
