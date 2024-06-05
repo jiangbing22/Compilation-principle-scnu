@@ -12,11 +12,15 @@ struct grammarNode
 class grammar
 {
 private:
-
+	void createExG();
+	void createFirst();
+	void createFollow();
+	std::string first;
 public:
 	grammar(const std::string filepath);
 	std::unordered_map<std::string,std::unordered_set<std::string>> firstMap;
-	std::unordered_map<std::string,std::unordered_set<std::string>> secondMap;
+	std::unordered_map<std::string,std::unordered_set<std::string>> followMap;
 	std::unordered_set<std::string> unendSet;
 	std::vector<grammarNode> G;
+	std::vector<grammarNode> ex_G;
 };
