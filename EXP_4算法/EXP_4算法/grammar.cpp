@@ -25,6 +25,9 @@ bool addToSet(std::unordered_set<std::string>& set1, const std::unordered_set<st
 }
 void grammar::createExG()
 {
+    for (const auto& nonTerminal : unendSet) {
+        nullMap[nonTerminal] = false;
+    }
     bool flag = 0;
     for (auto i : G)
     {
@@ -47,6 +50,10 @@ void grammar::createExG()
             for (auto j = last; j < itr; j++)
             {
                 newnode.right.push_back(*j);
+                if (*j == "@")
+                {
+                    nullMap[i.left] = true;
+                }
             }
             ex_G.push_back(newnode);
             if (itr != i.right.end())
@@ -71,11 +78,15 @@ void grammar::createFirst() {
             const std::string& left = rule.left;
             const std::vector<std::string>& right = rule.right;
 
-            bool epsilonFound = true;  // 假设当前产生式右部可以生成空串
+            bool epsilonFound = true; 
             for (size_t i = 0; i < right.size(); ++i) {
                 const std::string& symbol = right[i];
 
                 // 如果符号是终结符，将其添加到FIRST(left)
+                if (symbol == "@")
+                {
+                    break;
+                }
                 if (!isNonTerminal(symbol, unendSet)) {
                     if (firstMap[left].insert(symbol).second) {
                         changed = true;
@@ -88,23 +99,30 @@ void grammar::createFirst() {
                     if (addToSet(firstMap[left], firstMap[symbol])) {
                         changed = true;
                     }
-
                     // 如果FIRST(symbol)不包含ε，则不再继续处理下一个符号
-                    if (firstMap[symbol].find("@") == firstMap[symbol].end()) {
+                    if (!nullMap[symbol]) {
                         epsilonFound = false;
                         break;
                     }
                 }
             }
-
-            // 如果当前产生式右部所有符号都能生成空串，将ε加入到FIRST(left)
+                        
+            // 如果当前产生式右部所有符号都能生成空串，则first集里有空串
             if (epsilonFound) {
-                if (firstMap[left].insert("@").second) {
-                    changed = true;
-                }
+                nullMap[left] = true;
             }
         }
     }
+    for (const auto& nonTerminal : unendSet) {        
+        if (nullMap[nonTerminal])
+        {
+            firstMap[nonTerminal].insert("@");
+        }
+    }
+    //for (auto i : nullMap)
+    //{
+    //    std::cout << i.first << i.second << std::endl;
+    //}
 }
 void grammar::createFollow() {
     // 初始化followMap，所有非终结符的FOLLOW集合为空集
@@ -112,57 +130,85 @@ void grammar::createFollow() {
         followMap[nonTerminal] = std::unordered_set<std::string>();
     }
 
-    // 添加开始符号的FOLLOW集合初始为"$"
+    // 将文法开始符号的FOLLOW集合中加入结束符号$
     followMap[first].insert("$");
 
-    bool changed = true;
-    while (changed) {
-        std::cout << changed;
-        changed = false;
+    bool changed = true;  // 标志变量，表示FOLLOW集合是否发生变化
+    while (changed) {  // 当FOLLOW集合发生变化时，继续循环
+        changed = false;  // 每次循环开始时，重置changed为false
+
+        // 遍历每一个产生式规则
         for (const auto& rule : ex_G) {
-            const std::string& left = rule.left;
-            const std::vector<std::string>& right = rule.right;
+            const std::string& left = rule.left;  // 产生式左部
+            const std::vector<std::string>& right = rule.right;  // 产生式右部
 
+            // 遍历产生式右部的每一个符号
             for (size_t i = 0; i < right.size(); ++i) {
-                const std::string& symbol = right[i];
+                const std::string& symbol = right[i];  // 当前符号
 
+                // 如果当前符号是非终结符
                 if (isNonTerminal(symbol, unendSet)) {
-                    std::unordered_set<std::string> followSet;
+                    std::unordered_set<std::string> followTemp;  // 临时集合，用于存储需要加入FOLLOW集合的符号
 
-                    bool epsilonInNextFirst = true;
-                    for (size_t j = i + 1; j < right.size() && epsilonInNextFirst; ++j) {
-                        epsilonInNextFirst = false;
-                        const std::string& nextSymbol = right[j];
+                    // FOLLOW规则1：A → αBβ，将FIRST(β)中除了ε以外的所有符号加入FOLLOW(B)中
+                    if (i + 1 < right.size()) {  // 如果B后面还有符号β
+                        for (size_t j = i + 1; j < right.size(); ++j) {
+                            const std::string& nextSymbol = right[j];  // 下一个符号
+                            if (nextSymbol == "@") {
+                                continue;  // 跳过空符号
+                            }
 
-                        if (!isNonTerminal(nextSymbol, unendSet)) {
-                            followSet.insert(nextSymbol);
-                            break;
-                        }
-                        else {
-                            const auto& nextFirstSet = firstMap[nextSymbol];
-                            followSet.insert(nextFirstSet.begin(), nextFirstSet.end());
-                            followSet.erase("@");
-
-                            if (nextFirstSet.find("@") != nextFirstSet.end()) {
-                                epsilonInNextFirst = true;
+                            // 如果下一个符号是终结符，直接加入临时集合，然后停止处理
+                            if (!isNonTerminal(nextSymbol, unendSet)) {
+                                followTemp.insert(nextSymbol);
+                                break;
+                            }
+                            else {
+                                // 如果下一个符号是非终结符，将其FIRST集合加入临时集合
+                                addToSet(followTemp, firstMap[nextSymbol]);
+                                followTemp.erase("@");
+                                // 如果下一个符号不能生成空串，停止处理
+                                if (!nullMap[nextSymbol]) {
+                                    break;
+                                }
                             }
                         }
                     }
 
-                    if (epsilonInNextFirst || i + 1 == right.size()) {
-                        if (addToSet(followSet, followMap[left])) {
-                            changed = true;
+                    // FOLLOW规则2：A → αB 或 A → αBβ 且ε在FIRST(β)中，将FOLLOW(A)中的所有符号加入FOLLOW(B)中
+                    bool addFollow = (i + 1 == right.size());  // 判断B是否是产生式最后一个符号
+                    if (!addFollow && i + 1 < right.size()) {  // 如果B后面还有符号β
+                        for (size_t j = i + 1; j < right.size(); ++j) {
+                            const std::string& nextSymbol = right[j];  // 下一个符号
+                            // 如果下一个符号是空符号或能生成空串，继续检查下一个符号
+                            if (nextSymbol == "@" || nullMap[nextSymbol]) {
+                                addFollow = true;
+                            }
+                            else {
+                                addFollow = false;  // 只要有一个符号不能生成空串，停止检查
+                                break;
+                            }
                         }
                     }
 
-                    if (addToSet(followMap[symbol], followSet)) {
+                    // 如果需要将FOLLOW(A)中的符号加入FOLLOW(B)中
+                    if (addFollow) {
+                        addToSet(followTemp, followMap[left]);
+                    }
+
+                    // 如果FOLLOW集合发生变化，更新changed标志
+                    if (addToSet(followMap[symbol], followTemp)) {
                         changed = true;
                     }
                 }
             }
         }
     }
+
+
 }
+
+
 grammar::grammar(const std::string filepath) {
     std::ifstream infile(filepath);
     bool flag = false;
@@ -190,6 +236,6 @@ grammar::grammar(const std::string filepath) {
     }
     createExG();
     createFirst();
-    /*createFollow();*/
+    createFollow();
     return;
 }

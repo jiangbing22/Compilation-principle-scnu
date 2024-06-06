@@ -48,7 +48,7 @@
 exp ->exp addop term | term
 addop -> + | -
 term -> term mulop factor | factor
-mulop -> * |/
+mulop -> * | /
 factor -> ( exp ) | n
 由于第一个非终结符为exp，因此exp是文法的开始符号。
 

@@ -20,6 +20,7 @@ public:
 	grammar(const std::string filepath);
 	std::unordered_map<std::string,std::unordered_set<std::string>> firstMap;
 	std::unordered_map<std::string,std::unordered_set<std::string>> followMap;
+	std::unordered_map<std::string, bool> nullMap;
 	std::unordered_set<std::string> unendSet;
 	std::vector<grammarNode> G;
 	std::vector<grammarNode> ex_G;
