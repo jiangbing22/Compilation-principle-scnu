@@ -1,4 +1,4 @@
-#include"grammar.h"
+#include"LALR.h"
 #include<iostream>
 int main()
 {
@@ -38,6 +38,8 @@ int main()
 		}
 		std::cout << "}" << std::endl;
 	}
+	LALR lalr("grammar.txt");
+	return 0;
 
 
 }
