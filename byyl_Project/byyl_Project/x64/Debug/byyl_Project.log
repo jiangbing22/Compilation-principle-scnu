@@ -1,0 +1,29 @@
+﻿  DFA.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“DFA.cpp”)
+  
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\DFA.cpp(75,70): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  NFA.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“NFA.cpp”)
+  
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(42,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(48,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(60,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(64,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  mian.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“mian.cpp”)
+  
+  正在生成代码...
+  byyl_Project.vcxproj -> C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\x64\Debug\byyl_Project.exe
