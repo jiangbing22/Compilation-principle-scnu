@@ -19,6 +19,7 @@ public:
     unordered_map<string, int> state_map;
     unordered_set<char> get_key() { return DFA_key_set; };
     unordered_map<int, unordered_map<char, int>> get_minimizeGraph() { return minimizeGraph; };
+    void generate_code();
     string vectorToString(vector<int>& t);
     string setToString(set<int>& t);
 private:
@@ -31,4 +32,6 @@ private:
     vector<int> stringToIntVector(string s);
     string mapToString(const unordered_map<char, int>& mp);
     pair<vector<int>, unordered_map<char, vector<int>>>& operator[](int n);
+    string DFA_code;
+
 };

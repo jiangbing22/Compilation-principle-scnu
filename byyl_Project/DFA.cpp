@@ -196,6 +196,11 @@ void DFA_graph::minimize()
     return;
 }
 
+void DFA_graph::generate_code()
+{
+
+}
+
 string DFA_graph::vectorToString(vector<int>& t)
 {
     string res = "{";

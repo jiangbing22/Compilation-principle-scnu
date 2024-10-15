@@ -29,7 +29,7 @@
     <ClCompile Include="RE.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mian.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NFA.cpp">
