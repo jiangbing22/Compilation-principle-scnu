@@ -1,0 +1,37 @@
+2.Mini C的语法
+
+Mini C 的BNF语法如下:
+1. program-> definition-list
+2. definition-list-> definition-list definition | definition
+3. definition-> variable-definition | function-definition
+4. variable-definition-> type-indicator ID ；|type-indicator ID[NUM]；
+5. type-indicator-> int | float | double|void
+6. function-definition-> type-indicator ID（parameters）compound-stmt
+7. parameters->parameter-list | void
+8. parameter-list->parameter-list, parameter | parameter
+9. parameter-> type-indicator ID | type-indicator ID[ ]
+10.compound-stmt-> { local-definitions statement-list }
+11.local-definitions-> local-definitions variable-definition |empty
+12.statement-list-> statement-list statement | empty
+13.statement->expression-stmt | compound-stmt | condition-stmt |while-stmt |dowhile-stmt | return-stmt
+14.expression-stmt-> expression ； | ；
+15.condition-stmt-> if(expression) statement； |if（expression）statement else statement；
+16.while-stmt->while ( expression) statement ；
+17.dowhile-stmt->do statement while ( expression) ；
+18.return-stmt->return ；| return expression ；
+19.expression-> variable=expression | simple-expression
+20.variable->ID |ID[expression]
+21.simple-expression->additive-expression relop additive-expression
+|additive-expression
+22.relop-><=|<|>|>=|==|!=
+23 additive-expression->additive-expression addop term | term
+24.addop->+|-
+25.term->term mulop factor | factor
+26.mulop->*|/|% |^
+27 factor->(expression )| variable | call | NUM
+28.call->ID(arguments)
+29.arguments->argument-list | empty
+30.argument-list->argument-list,expression | expression
+
+
+注意：empty是代表空，输入时可以采用@来替代。

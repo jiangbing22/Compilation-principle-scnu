@@ -87,6 +87,7 @@ void DFA_graph::build_from_NFA(NFA_graph NFA)
         string key = entry.first;
         if (key.find(to_string(NFA.get_end())) != string::npos) {
             this->end.insert(entry.second);
+            endstring[entry.second] = NFA.endtype;
         }
     }
     return;
@@ -158,10 +159,12 @@ void DFA_graph::minimize()
         if (index_map.find(i) != index_map.end())
         {
             minimize_end.insert(index_map[i]);
+            minendstring[index_map[i]] = endstring[i];
         }
         else
         {
             minimize_end.insert(i);
+            minendstring[i] = endstring[i];
         }
     }
     for (auto i : partition_tag)
@@ -217,6 +220,79 @@ string DFA_graph::setToString(set<int>& t)
     res += "}";
     return res;
 }
+
+string DFA_graph::generateCode() {
+    string code = "";
+    code += "#include<iostream>\n";
+    code += "#include<utility>\n";
+    code += "#include<fstream>\n";
+    code += "#include<string>\n";
+    code += "#include<map>\n";
+    code += "using namespace std;\n";
+    code += "int main() {\n";
+    code += "    ifstream infile(\"sample.txt\");\n";
+    code += "    map<int, string> endmap;\n";
+
+    for (auto i : minendstring) {
+        code += "    endmap[" + to_string(i.first) + "] = \"" + i.second + "\";\n";
+    }
+
+    code += "    int idx = 0;\n";
+    code += "    string line;\n";
+    code += "    string tokenstring;\n";
+    code += "    while (std::getline(infile, line)) {\n";
+    code += "        int state = " + to_string(start) + ";\n";
+    code += "        idx = 0;\n";
+    code += "        tokenstring = \"\";\n";
+
+    code += "        while (state < " + to_string(minimizeGraph.size()) + " && idx < line.size()) {\n";
+    code += "            tokenstring += line[idx];\n";  // 把当前字符加入tokenstring
+    code += "            switch (state) {\n";
+
+    for (int i = 0; i < minimizeGraph.size(); i++) {
+        code += "                case " + to_string(i) + ":\n";
+        code += "                    switch (line[idx]) {\n";
+        for (auto item : minimizeGraph[i]) {
+            if (item.second!=-1)
+            {
+                code += "                        case \'" + string(1, item.first) + "\':\n";
+                code += "                            state = " + to_string(item.second) + ";\n";
+                code += "                            break;\n";
+            }
+        }
+        code += "                        default:\n";
+        code += "                            state = " + to_string(minimizeGraph.size()) + ";\n";
+        code += "                            break;\n";
+        code += "                    }\n";
+        code += "                    break;\n";
+    }
+
+    code += "                default:\n";
+    code += "                    state = " + to_string(minimizeGraph.size()) + ";\n";
+    code += "                    break;\n";
+    code += "            }\n";
+    code += "            idx++;\n";
+    code += "        }\n";
+
+    // 判断是否处于终止状态
+    code += "        if (";
+    int cnt = 0;
+    for (int i : minimize_end) {
+        code += "state == " + to_string(i);
+        cnt++;
+        if (cnt != minimize_end.size()) code += " || ";
+    }
+    code += ") {\n";
+    code += "            cout << \"tokenstring: \" << tokenstring << \" type: \" << endmap[state] << endl;\n";
+    code += "        } else {\n";
+    code += "            cout << \"Invalid token: \" << tokenstring << endl;\n";
+    code += "        }\n";
+    code += "    }\n";
+    code += "}\n";
+    return code;
+}
+
+
 
 vector<int> DFA_graph::stringToIntVector(string s)
 {

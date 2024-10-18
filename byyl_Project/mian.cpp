@@ -111,6 +111,8 @@ int main()
 	cout << "-------------------------" << endl;
 	DFA.minimize();
 	print_minimize(DFA);
+	cout << "-------------------------" << endl;
+	cout << DFA.generateCode();
 
 
 }

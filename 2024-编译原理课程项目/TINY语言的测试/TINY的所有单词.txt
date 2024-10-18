@@ -1,0 +1,20 @@
+TINY 语言的单词分类
+
+
+(1). 关键词：
+                    if   then  else   end   repeat  until  read  write     不区分大小写
+
+(2). 专用符号：     +    –    *   /   %  ^   <   <> <=  >=  >     =      {    }   ；  :=   
+
+(3). identifier和number，则定义：
+           identifier： 字母开头，后面可跟若干个字母或数字符号，且不区分大小写
+           number：  数字符号开头，后面可跟若干个数字
+  也可以抽象地表示为：
+           identifier = letter(letter|digit)*
+           number  = digit+
+            letter = [a-zA-Z]
+            digit = [0-9]
+ 
+(4). 空格由空白、换行符和制表符组成。
+
+(5).用表示{  }注释,注释可以放在任何空白出现的位置(即注释不能放在标记内)上，且可以超过一行。注释不能嵌套。 

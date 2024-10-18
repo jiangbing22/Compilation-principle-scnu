@@ -1,6 +1,7 @@
 #pragma once
 #include"mutils.h"
 #include"NFA.h"
+#include<fstream>
 #define DFA_GRAPH std::vector<pair<vector<int>,unordered_map<char,vector<int>>>>
 class DFA_graph
 {
@@ -15,12 +16,14 @@ public:
     {
         return Graph.size();
     }
-
     unordered_map<string, int> state_map;
     unordered_set<char> get_key() { return DFA_key_set; };
     unordered_map<int, unordered_map<char, int>> get_minimizeGraph() { return minimizeGraph; };
     string vectorToString(vector<int>& t);
     string setToString(set<int>& t);
+    string getEndtype(int a) { return endstring[a]; };
+    string getminEndtype(int a) { return minendstring[a]; };
+    string generateCode();
 private:
     int start;
     set<int> end;
@@ -30,5 +33,7 @@ private:
     unordered_set<char> DFA_key_set;
     vector<int> stringToIntVector(string s);
     string mapToString(const unordered_map<char, int>& mp);
-    pair<vector<int>, unordered_map<char, vector<int>>>& operator[](int n);
+    pair<vector<int>, unordered_map<char, vector<int>>>& operator[](int n); 
+    unordered_map<int, string> endstring;
+    unordered_map<int, string> minendstring;
 };

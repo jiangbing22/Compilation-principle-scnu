@@ -11,7 +11,7 @@ public:
         start = end = 0;
     }
     void init(char a);
-
+    string endtype;
     int size() const
     {
         return Graph.size();
