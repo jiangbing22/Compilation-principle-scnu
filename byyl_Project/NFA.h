@@ -22,6 +22,7 @@ public:
     {
         return Graph;
     }
+    vector<unordered_map<char, vector<int>>> Graph;
     int get_start() { return start; };
     int get_end() { return end; };
     set<char> getkey();
@@ -31,11 +32,9 @@ public:
     NFA_graph& operator+();
     NFA_graph& optional();
     void build_NFA(RE regex);
-private:
-    vector<unordered_map<char, vector<int>>> Graph;
-    int start, end;
     void contact(NFA_graph& b);
-    unordered_set<char> calculator = { '*', '+', '?' , '|' ,'&','\\'};
+    int start = 0, end = 0;
+    unordered_set<char> calculator = { '*', '+', '?' , '|' ,'&','\\' };
 };
 
 

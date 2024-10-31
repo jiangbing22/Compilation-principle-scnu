@@ -3,36 +3,58 @@
   "WorkspaceRootPath": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:DFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:NFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:NFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mian.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:mian.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:NFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:RE.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mutils.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:mutils.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:NFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:DFA.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:DFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:LALR.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:grammar.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:grammar.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:RE.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:DFA.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mutils.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:mutils.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F58D3C21-CC75-4C4E-BC3D-3C753D1DC89C}|byyl_Project.vcxproj|solutionrelative:LALR.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\vector||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xhash||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +64,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,107 +72,174 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RE.cpp",
-              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.cpp",
-              "RelativeDocumentMoniker": "RE.cpp",
-              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.cpp",
-              "RelativeToolTip": "RE.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-18T02:54:28.707Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "mian.cpp",
               "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mian.cpp",
               "RelativeDocumentMoniker": "mian.cpp",
               "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mian.cpp",
               "RelativeToolTip": "mian.cpp",
-              "ViewState": "AQIAAFUAAAAAAAAAAAAYwGoAAAAQAAAA",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAAFMAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-18T01:22:32.39Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "NFA.cpp",
               "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.cpp",
               "RelativeDocumentMoniker": "NFA.cpp",
               "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.cpp",
               "RelativeToolTip": "NFA.cpp",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAAAH4AAAAiAAAA",
+              "ViewState": "AQIAAFsAAAAAAAAAAAAWwHYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-18T01:01:45.014Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "NFA.h",
               "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.h",
               "RelativeDocumentMoniker": "NFA.h",
               "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\NFA.h",
               "RelativeToolTip": "NFA.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAANAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-18T01:00:26.096Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T01:00:26.096Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "DFA.h",
-              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h",
-              "RelativeDocumentMoniker": "DFA.h",
-              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h",
-              "RelativeToolTip": "DFA.h",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAAAB4AAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-18T01:00:04.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "mutils.h",
               "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mutils.h",
               "RelativeDocumentMoniker": "mutils.h",
               "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\mutils.h",
               "RelativeToolTip": "mutils.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-18T01:00:04.153Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T01:00:04.153Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DFA.cpp",
-              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp",
-              "RelativeDocumentMoniker": "DFA.cpp",
-              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp",
-              "RelativeToolTip": "DFA.cpp",
-              "ViewState": "AQIAAEYAAAAAAAAAAAAAAFIAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-16T15:40:42.284Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "RE.h",
               "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.h",
               "RelativeDocumentMoniker": "RE.h",
               "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.h",
               "RelativeToolTip": "RE.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAVAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-09-26T04:27:27.066Z",
+              "WhenOpened": "2024-09-26T04:27:27.066Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RE.cpp",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.cpp",
+              "RelativeDocumentMoniker": "RE.cpp",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\RE.cpp",
+              "RelativeToolTip": "RE.cpp",
+              "ViewState": "AQIAAEQAAAAAAAAAAAAWwFMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-18T02:54:28.707Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "xhash",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xhash",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xhash",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xhash",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\xhash",
+              "ViewState": "AQIAAJECAAAAAAAAAAAQwLMCAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-10-27T03:28:26.526Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "grammar.h",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.h",
+              "RelativeDocumentMoniker": "grammar.h",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.h",
+              "RelativeToolTip": "grammar.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-10-20T04:20:12.667Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "vector",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\vector",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\vector",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\vector",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include\\vector",
+              "ViewState": "AQIAAHoHAAAAAAAAAAAiwIoHAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-10-22T14:47:38.752Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DFA.h",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h",
+              "RelativeDocumentMoniker": "DFA.h",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.h",
+              "RelativeToolTip": "DFA.h",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAowBEAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-10-18T01:00:04.68Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DFA.cpp",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp",
+              "RelativeDocumentMoniker": "DFA.cpp",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\DFA.cpp",
+              "RelativeToolTip": "DFA.cpp",
+              "ViewState": "AQIAAC8BAAAAAAAAAAAowHIBAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-16T15:40:42.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LALR.cpp",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.cpp",
+              "RelativeDocumentMoniker": "LALR.cpp",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.cpp",
+              "RelativeToolTip": "LALR.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-20T04:09:12.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "grammar.cpp",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.cpp",
+              "RelativeDocumentMoniker": "grammar.cpp",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\grammar.cpp",
+              "RelativeToolTip": "grammar.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-20T04:09:37.805Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LALR.h",
+              "DocumentMoniker": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.h",
+              "RelativeDocumentMoniker": "LALR.h",
+              "ToolTip": "C:\\Users\\50513\\Documents\\GitHub\\Compilation-principle-scnu\\byyl_Project\\LALR.h",
+              "RelativeToolTip": "LALR.h",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAAAIcAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-10-20T04:20:12.874Z"
             }
           ]
         }

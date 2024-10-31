@@ -3,10 +3,12 @@
 #include"NFA.h"
 #include<fstream>
 #define DFA_GRAPH std::vector<pair<vector<int>,unordered_map<char,vector<int>>>>
+void print_NFA(NFA_graph NFA);
 class DFA_graph
 {
 public:
-    void build_from_NFA(NFA_graph NFA);
+    NFA_graph total_NFA;
+    void build_from_NFA(vector<NFA_graph> NFA);
     void minimize();
     int get_start() { return start; };
     set<int> get_end() { return end; };
@@ -32,7 +34,7 @@ private:
     unordered_map<int, unordered_map<char, int>> minimizeGraph;
     unordered_set<char> DFA_key_set;
     vector<int> stringToIntVector(string s);
-    string mapToString(const unordered_map<char, int>& mp);
+    string mapToString(const unordered_map<char, string>& mp);
     pair<vector<int>, unordered_map<char, vector<int>>>& operator[](int n); 
     unordered_map<int, string> endstring;
     unordered_map<int, string> minendstring;

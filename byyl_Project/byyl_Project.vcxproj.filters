@@ -24,6 +24,12 @@
     <ClInclude Include="DFA.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="grammar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LALR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RE.cpp">
@@ -39,6 +45,12 @@
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="DFA.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="grammar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LALR.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

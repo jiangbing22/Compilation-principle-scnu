@@ -65,7 +65,7 @@ void RE::addConcat()
             if (i < re.length() - 1)
             {
                 result += re[i];
-                if (calculator.find(re[i + 1]) == calculator.end() || re[i + 1] == ')' || re[i + 1] == '\\')
+                if (calculator.find(re[i + 1]) == calculator.end() || re[i + 1] == '(' || re[i + 1] == '\\')
                 {
                     result += '&';
                     

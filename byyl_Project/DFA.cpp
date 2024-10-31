@@ -1,15 +1,28 @@
 ﻿#include "DFA.h"
-void DFA_graph::build_from_NFA(NFA_graph NFA)
+void DFA_graph::build_from_NFA(vector<NFA_graph> NFA)
 {
+    //合成总NFA
+    print_NFA(total_NFA);
+    unordered_map<int, string> total_NFA_endmap;
+    for (auto& i : NFA)
+    {
+        total_NFA.contact(i);
+        total_NFA.Graph[0]['$'].push_back(i.get_start());
+        total_NFA_endmap[i.get_end()] = i.endtype;
+        print_NFA(total_NFA);
+        cout<<i.endtype<<endl;
+    }
+
     this->DFA_key_set.clear();
     this->Graph.clear();
     this->end.clear();
     state_map.clear();
-    GRAPH nfa = NFA.get_graph(); 
-    queue<vector<int>> state_queue;
-    set<char> key_set = NFA.getkey();
 
-    auto BFS_Closure = [&](const vector<int>& states) 
+     GRAPH nfa = total_NFA.get_graph();
+    queue<vector<int>> state_queue;
+    set<char> key_set = total_NFA.getkey();
+
+    auto BFS_Closure = [&](const vector<int>& states)
         {
             set<int> closure;
             unordered_map<int, bool> visited;
@@ -34,7 +47,7 @@ void DFA_graph::build_from_NFA(NFA_graph NFA)
             }
             return closure;
         };
-    set<int> startstate = BFS_Closure({ NFA.get_start() });
+    set<int> startstate = BFS_Closure({ 0 });
     state_queue.push(vector<int>(startstate.begin(), startstate.end()));
     //state_map[setToString(startstate)]=this->Graph.size();
     while (!state_queue.empty())
@@ -83,12 +96,28 @@ void DFA_graph::build_from_NFA(NFA_graph NFA)
         }
     }
     this->start = 0;
-    for (auto& entry : state_map) {
+    for (auto& entry : state_map)
+    {
         string key = entry.first;
-        if (key.find(to_string(NFA.get_end())) != string::npos) {
-            this->end.insert(entry.second);
-            endstring[entry.second] = NFA.endtype;
+        for (auto i : total_NFA_endmap)
+        {
+            auto subString = to_string(i.first);
+            auto position = key.find(subString);
+            if (position!=string::npos)
+            {
+                bool isStrictMatch = (position == 0 || !isdigit(key[position - 1]) ) &&
+                    (position + subString.length() == key.length() || !isdigit(key[position + subString.length()]));
+                if (isStrictMatch)
+                {
+                    this->end.insert(entry.second);
+                    endstring[entry.second] = i.second;
+                    break;
+                }
+            }
         }
+    }
+    for (auto i : endstring) {
+        cout << i.first << "->" << this->endstring[i.first] << endl;
     }
     return;
 };
@@ -105,24 +134,20 @@ void DFA_graph::minimize()
             else_set_index.insert(i.second);
         }
     }
-    vector<unordered_map<char, int>> partition_graph;
+    vector<unordered_map<char, string>> partition_graph;
     for (auto state : this->Graph)
     {
         auto t_map = state.second;
-        unordered_map<char, int> result;
+        unordered_map<char, string> result;
         for (auto key : DFA_key_set)
         {
             if (t_map[key].empty())
             {
-                result[key] = -1;
-            }
-            else if (end_set_index.find(state_map[vectorToString(t_map[key])]) != end_set_index.end())
-            {
-                result[key] = true;
+                result[key] = "-1";
             }
             else
             {
-                result[key] = false;
+                result[key] =vectorToString(t_map[key]);
             }
         }
         partition_graph.push_back(result);
@@ -136,6 +161,7 @@ void DFA_graph::minimize()
         if (end_set_index.find(i) != end_set_index.end())
         {
             map_key += " end";
+            map_key += " " + endstring[i];
         }
         else
         {
@@ -167,6 +193,8 @@ void DFA_graph::minimize()
             minendstring[i] = endstring[i];
         }
     }
+
+    
     for (auto i : partition_tag)
     {
         if (partition_tag.find(i) == partition_tag.end())
@@ -195,6 +223,9 @@ void DFA_graph::minimize()
                 minimizeGraph[i][key] = -1;
             }
         }
+    }
+    for (auto i : minendstring) {
+        cout << i.first << "->" << this->endstring[i.first] << endl;
     }
     return;
 }
@@ -230,7 +261,12 @@ string DFA_graph::generateCode() {
     code += "#include<map>\n";
     code += "using namespace std;\n";
     code += "int main() {\n";
-    code += "    ifstream infile(\"sample.txt\");\n";
+    code += "    ifstream infile(\"codeInput.txt\");\n";
+    code += "    ofstream outfile(\"token.txt\");\n";
+    code += "    if (!outfile||!infile) {\n";
+    code += "        cerr << \"Error opening file!\" << endl;\n";
+    code += "        return 1;\n";
+    code += "    }\n";
     code += "    map<int, string> endmap;\n";
 
     for (auto i : minendstring) {
@@ -246,15 +282,14 @@ string DFA_graph::generateCode() {
     code += "        tokenstring = \"\";\n";
 
     code += "        while (state < " + to_string(minimizeGraph.size()) + " && idx < line.size()) {\n";
-    code += "            tokenstring += line[idx];\n";  // 把当前字符加入tokenstring
+    code += "            tokenstring += line[idx];\n";  
     code += "            switch (state) {\n";
 
     for (int i = 0; i < minimizeGraph.size(); i++) {
         code += "                case " + to_string(i) + ":\n";
         code += "                    switch (line[idx]) {\n";
         for (auto item : minimizeGraph[i]) {
-            if (item.second!=-1)
-            {
+            if (item.second != -1) {
                 code += "                        case \'" + string(1, item.first) + "\':\n";
                 code += "                            state = " + to_string(item.second) + ";\n";
                 code += "                            break;\n";
@@ -274,7 +309,6 @@ string DFA_graph::generateCode() {
     code += "            idx++;\n";
     code += "        }\n";
 
-    // 判断是否处于终止状态
     code += "        if (";
     int cnt = 0;
     for (int i : minimize_end) {
@@ -283,14 +317,18 @@ string DFA_graph::generateCode() {
         if (cnt != minimize_end.size()) code += " || ";
     }
     code += ") {\n";
-    code += "            cout << \"tokenstring: \" << tokenstring << \" type: \" << endmap[state] << endl;\n";
+    code += "            outfile << tokenstring<< \" -> \" << endmap[state] << endl;\n";
     code += "        } else {\n";
-    code += "            cout << \"Invalid token: \" << tokenstring << endl;\n";
+    code += "            outfile << \"Invalid token: \" << tokenstring << endl;\n";
     code += "        }\n";
     code += "    }\n";
+    code += "    infile.close();\n";
+    code += "    outfile.close();\n";
+    code += "    return 0;\n";
     code += "}\n";
     return code;
 }
+
 
 
 
@@ -313,12 +351,12 @@ vector<int> DFA_graph::stringToIntVector(string s)
     return res;
 }
 
-string DFA_graph::mapToString(const unordered_map<char, int>& mp) {
+string DFA_graph::mapToString(const unordered_map<char, string>& mp) {
     string res;
     for (const auto& p : mp) {
         res += p.first;
         res += ':';
-        res += to_string(p.second);
+        res += p.second;
         res += " ";
     }
     return res;
@@ -337,4 +375,26 @@ pair<vector<int>, unordered_map<char, vector<int> > >& DFA_graph::operator[](int
     }
 }
 
-
+void print_NFA(NFA_graph NFA)
+{
+    GRAPH result = NFA.get_graph();
+    cout << "start:" << NFA.get_start() << " end:" << NFA.get_end() << endl;
+    int count = 0;
+    for (auto a : result)
+    {
+        cout << " node:" << count << " ";
+        for (auto b : a)
+        {
+            char key = b.first;
+            cout << "vertex: " << key << " ";
+            cout << "arrive: ";
+            for (auto c : a[key])
+            {
+                cout << c << " ";
+            }
+        }
+        count++;
+        cout << endl;
+    }
+    cout << "--------------------------------------------------------" << endl;
+}

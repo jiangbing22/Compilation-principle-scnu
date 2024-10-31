@@ -1,27 +1,6 @@
 #include"DFA.h"
 
-void print_NFA(NFA_graph NFA)
-{
-	GRAPH result = NFA.get_graph();
-	cout << "start:" << NFA.get_start() << " end:" << NFA.get_end() << endl;
-	int count = 0;
-	for (auto a : result)
-	{
-		cout << " node:" << count << " ";
-		for (auto b : a)
-		{
-			char key = b.first;
-			cout << "vertex: " << key << " ";
-			cout << "arrive: ";
-			for (auto c : a[key])
-			{
-				cout << c << " ";
-			}
-		}
-		count++;
-		cout << endl;
-	}
-}
+
 void print_DFA(DFA_graph DFA)
 {
 	DFA_GRAPH result = DFA.get_Graph();
@@ -96,17 +75,32 @@ void print_minimize(DFA_graph DFA)
 }
 int main()
 {
+	int num;
+	cin >> num;
+	vector<NFA_graph> NFAs;
 	string init;
-	getline(std::cin, init);
-	RE temp(init);
-	cout << "regex:" << temp.get_re() << endl;
-	cout << "regex_post:" << temp.get_post() << endl;
-	NFA_graph NFA;
+	for (int i = 0; i < num; i++)
+	{
+		cin >> init;
+		cout << init;
+		NFA_graph NFA;
+		cin>>NFA.endtype;
+		RE temp(init);
+		cout << "regex:" << temp.get_re() << endl;
+		cout << "regex_post:" << temp.get_post() << endl;
+
+		NFA.build_NFA(temp);
+
+		print_NFA(NFA);
+		cout << "-------------------------" << endl;
+		NFAs.push_back(NFA);
+	}
 	DFA_graph DFA;
-	NFA.build_NFA(temp);
-	print_NFA(NFA);
+
+
+	DFA.build_from_NFA(NFAs);
+	print_NFA(DFA.total_NFA);
 	cout << "-------------------------" << endl;
-	DFA.build_from_NFA(NFA);
 	print_DFA(DFA);
 	cout << "-------------------------" << endl;
 	DFA.minimize();

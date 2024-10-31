@@ -87,10 +87,18 @@ NFA_graph& NFA_graph::optional()
 }
 void NFA_graph::init(char a)
 {
+
     Graph.resize(2);
     this->end = 1;
     this->start = 0;
-    Graph[0][a] = { this->end };
+    if (a != '_')
+    {
+        Graph[0][a] = { this->end };
+    }
+    else
+    {
+        Graph[0]['$'] = { this->end };
+    }
 }
 
 unordered_map<char, vector<int> >& NFA_graph::operator[](int n)
@@ -124,7 +132,6 @@ void NFA_graph::build_NFA(RE re)
         else if (*c == '\\')
         {
             c++;
-            std::cout << *c<<endl;
             NFA_graph temp;
             temp.init(*c);
             stk.emplace(temp);

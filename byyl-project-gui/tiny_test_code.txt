@@ -1,0 +1,17 @@
+{this a tiny program}
+x:=1
+y:=2
+REPEAT
+    x = x + y
+until
+    x > 10
+if
+    x <> 2 * y
+then
+    x := y + 10
+else
+    x := y - 1000
+endif
+end
+{ test
+this is a mutirows comments}

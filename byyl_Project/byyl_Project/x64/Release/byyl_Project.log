@@ -1,0 +1,10 @@
+﻿  mian.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“mian.cpp”)
+  
+  正在生成代码
+  7 of 2652 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  byyl_Project.vcxproj -> C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\x64\Release\byyl_Project.exe

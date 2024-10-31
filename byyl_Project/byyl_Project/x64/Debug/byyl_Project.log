@@ -1,6 +1,36 @@
-﻿  DFA.cpp
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : 对路径“c:\users\50513\documents\github\compilation-principle-scnu\byyl_project\x64\debug\byyl_project.exe”的访问被拒绝。
+  DFA.cpp
 C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
   (编译源文件“DFA.cpp”)
   
-C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\DFA.cpp(75,70): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-  byyl_Project.vcxproj -> C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\x64\Debug\byyl_Project.exe
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\DFA.cpp(88,70): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  grammar.cpp
+  LALR.cpp
+  mian.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“mian.cpp”)
+  
+  NFA.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.h(17,26): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+  (编译源文件“NFA.cpp”)
+  
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(42,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(46,56): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         with
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         [
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:             _Ty=int
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(47,52): warning C4267:         ]
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(48,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(60,32): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\NFA.cpp(64,30): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  RE.cpp
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\RE.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\RE.cpp(17,27): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  mutils.h
+  正在生成代码...
+LINK : fatal error LNK1104: 无法打开文件“C:\Users\50513\Documents\GitHub\Compilation-principle-scnu\byyl_Project\x64\Debug\byyl_Project.exe”
