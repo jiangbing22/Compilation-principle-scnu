@@ -117,8 +117,8 @@ void MainWindow::on_savere_Button_clicked()
     QString regexString = ui->re_text->toPlainText();
 
     // 定义正则表达式
-    static QRegularExpression qregex("\\b([a-zA-Z0-9]+)\\s*=\\s*([^\\n]+)");
-    static QRegularExpression end("\\b_([a-zA-Z0-9]+)\\s*=\\s*([^\\n]+)");
+    static QRegularExpression qregex("\\b([-a-zA-Z0-9]+)\\s*=\\s*([^\\n]+)");
+    static QRegularExpression end("\\b_([-a-zA-Z0-9]+)\\s*=\\s*([^\\n]+)");
 
     // 全局匹配
     QRegularExpressionMatchIterator i = qregex.globalMatch(regexString);
@@ -440,7 +440,7 @@ void MainWindow::on_startana_Button_clicked()
 
 void MainWindow::on_savelex_Button_clicked()
 {
-    QString filePath2 = QFileDialog::getSaveFileName(this, "Save File", QString(), "text File (*.txt)");
+    QString filePath2 = QFileDialog::getSaveFileName(this, "Save File", QString(), "text File (*.lex)");
     if (!filePath2.isEmpty()) {
         QFile file(filePath2);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -450,4 +450,31 @@ void MainWindow::on_savelex_Button_clicked()
         }
     }
 }
+
+
+void MainWindow::on_gettoken_Button_clicked()
+{
+    lexPath = QFileDialog::getOpenFileName(this, "Save File", QString(), "text File (*.lex)");
+    if (!lexPath.isEmpty()) {
+        QFile file(lexPath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            ui->a_code_Edit->setText(in.readAll());
+            file.close();
+        }
+    }
+}
+
+
+void MainWindow::on_gentree_Button_clicked()
+{
+    std::string temp = filePath.toStdString();
+    LALR lalr(temp);
+    auto anaProcess = lalr.Analysis(lexPath.toStdString());
+    ui->a_code_Edit->setText(QString::fromStdString(anaProcess));
+    lalr.printTreeView(ui->a_treeView);
+
+}
+
+
 

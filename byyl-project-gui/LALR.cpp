@@ -7,11 +7,9 @@ std::string LALR::countcore(std::unordered_set<LR1Item> itemset)
     std::unordered_set <std::string> coreset;
     for (const auto& item : itemset) {
         std::string str = item.lhs;
-        str += "=";
         for (auto j : item.rhs)
         {
             str += j;
-            str += "&";
         }
         str += item.dotPos;
         coreset.insert(str);
@@ -20,64 +18,54 @@ std::string LALR::countcore(std::unordered_set<LR1Item> itemset)
     for (auto i : coreset)
     {
         result += i;
-        result += "\n";
     }
-    std::cout << result;
+    // std::cout << result;
     return result;
 }
 
 // 闭包函数，用于计算LR1项目集的闭包。
 std::unordered_set<LR1Item> LALR::closure(const std::unordered_set<LR1Item>& items) {
-    std::unordered_set<LR1Item> closureSet = items; // 初始化闭包集为输入的项目集
-    bool added; // 标记是否在迭代中添加了新项目
+    std::unordered_set<LR1Item> closureSet = items;
+    bool added;
+
     do {
-        added = false; // 每次循环开始时，假定没有添加新项目
+        added = false;
         for (const auto& item : closureSet) {
-            if (item.dotPos < item.rhs.size()) { // 点未到达产生式右侧的末尾
-                std::string symbol = item.rhs[item.dotPos]; // 当前处理的符号
-                if (G.unendSet.find(symbol) != G.unendSet.end()) { // 如果是终结符，加入闭包
-                    // 对于每个以symbol为左侧符号的产生式，生成新的LR1项目
+            if (item.dotPos < item.rhs.size()) {
+                std::string symbol = item.rhs[item.dotPos];
+                if (G.unendSet.find(symbol) != G.unendSet.end()) {
                     for (const auto& prod : G.ex_G) {
                         if (prod.left == symbol) {
-                            std::unordered_set<std::string> lookaheads; // 初始化lookahead集合
-                            // 计算lookahead集合
+                            std::unordered_set<std::string> lookaheads;
+                            // Calculate lookaheads correctly
                             if (item.dotPos + 1 < item.rhs.size()) {
-                                // 如果点后面还有符号，计算FIRST集合
-                                std::string nextSymbol;
-                                bool isnull = true;
-                                for (int next = item.dotPos + 1; next < item.rhs.size(); next++) {
-                                    nextSymbol = item.rhs[next];
+                                bool isNull = true;
+                                for (int next = item.dotPos + 1; next < item.rhs.size(); ++next) {
+                                    std::string nextSymbol = item.rhs[next];
                                     if (G.unendSet.find(nextSymbol) == G.unendSet.end()) {
-                                        // 如果是终结符，加入lookahead集合
                                         lookaheads.insert(nextSymbol);
-                                        isnull = false;
+                                        isNull = false;
                                         break;
-                                    }
-                                    else if (G.nullMap[nextSymbol]) {
-                                        // 如果是非终结符且可为空，加入FIRST集合
+                                    } else if (G.nullMap[nextSymbol]) {
                                         lookaheads.insert(G.firstMap[nextSymbol].begin(), G.firstMap[nextSymbol].end());
-                                        lookaheads.erase("@"); // 移除特殊符号
-                                    }
-                                    else {
-                                        // 如果是非终结符且不可为空，加入FIRST集合
+                                        lookaheads.erase("@");
+                                    } else {
                                         lookaheads.insert(G.firstMap[nextSymbol].begin(), G.firstMap[nextSymbol].end());
-                                        isnull = false;
+                                        isNull = false;
                                         break;
                                     }
                                 }
-                                if (isnull) { // 如果点后所有符号都可为空，加入FOLLOW集合
-                                    lookaheads.insert(G.followMap[symbol].begin(), G.followMap[symbol].end());
+                                if (isNull) {
+                                    lookaheads.insert(G.followMap[item.lhs].begin(), G.followMap[item.lhs].end());
                                 }
-                            }
-                            else {
-                                // 如果点后面没有符号，使用当前lookahead
+                            } else {
                                 lookaheads.insert(item.lookahead);
                             }
-                            // 将新生成的LR1项目加入闭包集
+
                             for (const auto& lookahead : lookaheads) {
-                                LR1Item newItem{ symbol, prod.right, 0, lookahead };
+                                LR1Item newItem{symbol, prod.right, 0, lookahead};
                                 if (closureSet.insert(newItem).second) {
-                                    added = true; // 如果新项目被添加，标记为true
+                                    added = true;
                                 }
                             }
                         }
@@ -85,65 +73,60 @@ std::unordered_set<LR1Item> LALR::closure(const std::unordered_set<LR1Item>& ite
                 }
             }
         }
-    } while (added); // 如果添加了新项目，则继续迭代
-    return closureSet; // 返回闭包集
+    } while (added);
+    return closureSet;
 }
 
-// 转移函数，用于计算在给定符号下从某个项目集转移得到新的项目集。
 std::unordered_set<LR1Item> LALR::gotoState(const std::unordered_set<LR1Item>& items, const std::string& symbol) {
     std::unordered_set<LR1Item> gotoSet;
     for (const auto& item : items) {
         if (item.dotPos < item.rhs.size() && item.rhs[item.dotPos] == symbol) {
-            // 创建新的LR1项目，点向右移动一位
             gotoSet.insert({ item.lhs, item.rhs, item.dotPos + 1, item.lookahead });
         }
     }
-    // 对得到的goto集进行闭包操作
     return closure(gotoSet);
 }
 
-// 创建LR1自动机
 void LALR::createLR1Automaton() {
-    // 初始项目集，包含起始符号的起始项目
     std::unordered_set<LR1Item> startItems;
+    startItems.insert({ G.ex_G[0].left, { G.ex_G[0].right[0] }, 0, "$" });
 
-    startItems.insert({ G.ex_G[0].left, {G.ex_G[0].right[0]}, 0, "$" });
-    head = new LR1NODE{}; // 创建初始节点
-    std::queue<std::unordered_set<LR1Item>> stateQueue; // 用于存储待处理的状态队列
-    stateQueue.push(closure(startItems)); // 将初始闭包集入队
+    head = new LR1NODE{};
+    std::queue<std::unordered_set<LR1Item>> stateQueue;
+    stateQueue.push(closure(startItems));
 
-    std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap; // 映射从项目集到节点
-    stateMap[stateQueue.front()] = head; // 将初始闭包集映射到初始节点
-    int stateNum = 0; // 状态编号
+    std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap;
+    stateMap[stateQueue.front()] = head;
+
+    int stateNum = 0;
 
     while (!stateQueue.empty()) {
-        std::unordered_set<LR1Item> currentState = stateQueue.front(); // 获取当前状态
-        stateQueue.pop(); // 出队
+        auto currentState = stateQueue.front();
+        stateQueue.pop();
 
-        LR1NODE* currentNode = stateMap[currentState]; // 获取当前节点
+        LR1NODE* currentNode = stateMap[currentState];
+        currentNode->stateNum = stateNum++;
+        currentNode->items = currentState;
 
-        currentNode->stateNum = stateNum++; // 设置状态编号并递增
-        currentNode->items = currentState; // 设置节点的项目集
+        // 将当前状态映射到 indexmap
+        indexmap.push_back(currentNode);
 
-        // 计算每个符号的转移
         std::unordered_map<std::string, std::unordered_set<LR1Item>> symbolTransitions;
         for (const auto& item : currentState) {
             if (item.dotPos < item.rhs.size()) {
-                symbolTransitions[item.rhs[item.dotPos]].insert(item); // 以符号为键，存储项目
+                symbolTransitions[item.rhs[item.dotPos]].insert(item);
             }
         }
-        // 为每个符号的转移创建新的节点或更新映射表
+
         for (const auto& transition : symbolTransitions) {
             auto symbol = transition.first;
-            auto newState = gotoState(currentState, symbol); // 计算转移后的状态
+            auto newState = gotoState(currentState, symbol);
 
             if (stateMap.find(newState) == stateMap.end()) {
-                // 如果新状态不在映射表中，创建新节点并加入映射表
                 LR1NODE* newNode = new LR1NODE{};
                 stateMap[newState] = newNode;
-                stateQueue.push(newState); // 将新状态入队
+                stateQueue.push(newState);
             }
-            // 更新当前节点的转移表
             currentNode->state[symbol] = stateMap[newState];
         }
     }
@@ -151,114 +134,126 @@ void LALR::createLR1Automaton() {
 
 // 合并同心项目集生成LALR(1)自动机
 void LALR::createLALRAutomaton() {
-
     std::unordered_set<LR1Item> startItems;
     startItems.insert({ G.ex_G[0].left, {G.ex_G[0].right[0]}, 0, "$" });
-    LALRhead = new LR1NODE{}; // 创建初始节点
-    std::queue<std::unordered_set<LR1Item>> stateQueue; // 用于存储待处理的状态队列
-    stateQueue.push(closure(startItems)); // 将初始闭包集入队
+    LALRhead = new LR1NODE{};
+    std::queue<std::unordered_set<LR1Item>> stateQueue;
+    stateQueue.push(closure(startItems));
 
-    std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap; // 映射从项目集到节点
+    std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap;
     std::unordered_map<std::string, LR1NODE*> coreMap;
 
-    coreMap[countcore(stateQueue.front())] = LALRhead;
-    stateMap[stateQueue.front()] = LALRhead; // 将初始闭包集映射到初始节点
-    int stateNum = 0; // 状态编号
+    auto initialCore = countcore(stateQueue.front());
+    coreMap[initialCore] = LALRhead;
+    stateMap[stateQueue.front()] = LALRhead;
+    int stateNum = 1;
 
     while (!stateQueue.empty()) {
-        std::unordered_set<LR1Item> currentState = stateQueue.front(); // 获取当前状态
-        stateQueue.pop(); // 出队
-        LR1NODE* currentNode = stateMap[currentState]; // 获取当前节点
-        currentNode->stateNum = stateNum++; // 设置状态编号并递增
-        currentNode->items = currentState; // 设置节点的项目集
-        indexmap.push_back(currentNode);
-        // 收集当前状态的核心项目集
-        currentNode->core = countcore(currentState);
-        // 计算每个符号的转移
+        auto currentState = stateQueue.front();
+        stateQueue.pop();
+        LR1NODE* currentNode = stateMap[currentState];
+        currentNode->stateNum = stateNum++;
+        currentNode->items = currentState;
+        // indexmap.push_back(currentNode);
+
         std::unordered_map<std::string, std::unordered_set<LR1Item>> symbolTransitions;
         for (const auto& item : currentState) {
             if (item.dotPos < item.rhs.size()) {
-                symbolTransitions[item.rhs[item.dotPos]].insert(item); // 以符号为键，存储项目
+                symbolTransitions[item.rhs[item.dotPos]].insert(item);
             }
         }
 
-        // 为每个符号的转移创建新的节点或更新映射表
         for (const auto& transition : symbolTransitions) {
             auto symbol = transition.first;
-            auto newState = gotoState(currentState, symbol); // 计算转移后的状态
-            auto newcore = countcore(newState);
-            if (coreMap.find(newcore) == coreMap.end()) {
-                // 如果新状态不在映射表中，创建新节点并加入映射表
-                LR1NODE* newNode = new LR1NODE{};
-                stateMap[newState] = newNode;
-                coreMap[newcore] = newNode;
+            auto newState = gotoState(currentState, symbol);
+            newState = closure(newState);
 
-                stateQueue.push(newState); // 将新状态入队
-                // 更新当前节点的转移表
-                currentNode->state[symbol] = stateMap[newState];
-            }
-            else
-            {
-                //合并展望符号
-                for (auto i : newState)
-                {
-                    coreMap[newcore]->items.insert(i);
+            if (!newState.empty()) {
+                auto newCore = countcore(newState);
+
+                if (coreMap.find(newCore) == coreMap.end()) {
+                    LR1NODE* newNode = new LR1NODE{};
+                    stateMap[newState] = newNode;
+                    coreMap[newCore] = newNode;
+                    stateQueue.push(newState);
+                    currentNode->state[symbol] = newNode;
+
+                    newNode->stateNum = stateNum++;
+                    std::cout << "Created new state: " << newNode->stateNum << " with core: " << newCore << std::endl;
+                } else {
+                    auto existingNode = coreMap[newCore];
+                    for (const auto& item : newState) {
+                        if (!item.lookahead.empty()||!item.lhs.empty()||!item.rhs.empty()) { // 确保lookahead不为空
+                            existingNode->items.insert(item);
+                        }
+                    }
+                    currentNode->state[symbol] = existingNode;
+
+                    std::cout << "Merged with existing state: " << existingNode->stateNum << " for core: " << newCore << std::endl;
                 }
-                //newState = currentNode->items;
-                //stateMap[newState] = currentNode;
+            } else {
+                std::cout << "Skipped empty new state for symbol: " << symbol << std::endl;
             }
-
         }
     }
 }
-
-// 创建ACTION和GOTO表
 void LALR::generateParsingTable() {
-    // 初始化ACTION和GOTO表
-    for (int i = 0; i < indexmap.size(); i++) {
+    // 初始化 action 表和 goto 表
+    int numStates = indexmap.size();
+    for (int i = 0; i < numStates; i++) {
         for (const auto& symbol : G.endSet) {
-            actionTable[i][symbol] = "";
-            actionTable[i]["$"] = "";
+            actionTable[indexmap[i]->stateNum][symbol] = ""; // 使用原始状态编号
         }
+        actionTable[indexmap[i]->stateNum]["$"] = ""; // 结束符初始化
 
         for (const auto& symbol : G.unendSet) {
-            gotoTable[i][symbol] = -1;
+            gotoTable[indexmap[i]->stateNum][symbol] = -1; // 默认值
         }
     }
-    // 填充ACTION和GOTO表
-    for (int i = 0; i < indexmap.size();i++) {
-        for (const auto& item :indexmap[i]->items) {
+
+    // 填充 action 表
+    for (int i = 0; i < numStates; i++) {
+        for (const auto& item : indexmap[i]->items) {
             if (item.dotPos == item.rhs.size()) {
+                // 完成规约的项目
                 if (item.lhs == G.first) {
-                    actionTable[i][item.lookahead] = "accept";
-                }
-                else {
+                    actionTable[indexmap[i]->stateNum][item.lookahead] = "accept";
+                } else {
                     int prodIndex = G.itemMap[item.lhs + item.rhs2str()];
-                    // 规约
-                    actionTable[i][item.lookahead] = "r" + std::to_string(prodIndex);
+                    actionTable[indexmap[i]->stateNum][item.lookahead] = "r" + std::to_string(prodIndex);
                 }
-            }
-            else {
+            } else {
+                // 移进操作
                 std::string symbol = item.rhs[item.dotPos];
-                if (G.unendSet.find(symbol)==G.unendSet.end()) {
-                    auto nextState = indexmap[i]->state.find(symbol);
-                    if (nextState != indexmap[i]->state.end()) {
-                        // 移进
-                        actionTable[i][symbol] = "s" + std::to_string(nextState->second->stateNum);
+                if (symbol == "@") { // 处理空串的逻辑
+                    for (const auto& lookahead : G.followMap[item.lhs]) {
+                        if (actionTable[indexmap[i]->stateNum][lookahead].empty()) { // 仅在未设置的情况下填充
+                            actionTable[indexmap[i]->stateNum][lookahead] = "r" + std::to_string(G.itemMap[item.lhs + item.rhs2str()]);
+                        }
+                    }
+                }
+                else if (G.unendSet.find(symbol) == G.unendSet.end()) {
+                    auto nextNode = indexmap[i]->state.find(symbol);
+                    if (nextNode != indexmap[i]->state.end()) {
+                        actionTable[indexmap[i]->stateNum][symbol] = "s" + std::to_string(nextNode->second->stateNum); // 使用原始状态的编号
                     }
                 }
             }
         }
-        // 填充GOTO表
-        for (const auto& j: indexmap[i]->state) {
-            const auto & symbol = j.first;
-            const auto& nextNode= j.second;
-            if (G.unendSet.find(symbol)!= G.unendSet.end()) {
-                gotoTable[i][symbol] = nextNode->stateNum;
+
+        // 填充 goto 表
+        for (const auto& j : indexmap[i]->state) {
+            const auto& symbol = j.first;
+            const auto& nextNode = j.second;
+            if (G.unendSet.find(symbol) != G.unendSet.end()) {
+                gotoTable[indexmap[i]->stateNum][symbol] = nextNode->stateNum; // 使用原始状态的编号
             }
         }
     }
 }
+
+
+
 // LALR构造函数，接受一个文件路径作为参数
 LALR::LALR(const std::string filepath) : G(filepath), head(nullptr) {
     // 创建LR1自动机
@@ -278,56 +273,62 @@ LALR::LALR(const std::string filepath) : G(filepath), head(nullptr) {
 //每个单词都要以string+type的形式存在
 //做移进或规约时候输出操作数据——需要 tokentype tokenstring
 //需要编写处理函数，把源代码处理成上述结构
-string LALR::Analysis(std::string filepath)
+string LALR::Analysis(string filepath)
 {
-    std::stringstream resultss; // 使用 stringstream 记录结果日志
-    std::ifstream infile(filepath);
-    std::vector<std::pair<std::string, std::string>> tokens;
+    stringstream resultss; // 使用 stringstream 记录结果日志
+    ifstream infile(filepath);
+    vector<pair<string, string>> tokens;
 
     // 词法分析
     if (infile.is_open()) {
-        std::string sentence;
-        while (std::getline(infile, sentence)) {
-            std::stringstream ss(sentence);
-            std::string left, assign, right;
-            ss >> left >> assign >> right;
-            tokens.push_back(make_pair(left, right));
+        string sentence;
+        while (getline(infile, sentence)) {
+            stringstream ss(sentence);
+            string left, assign, right;
+            ss >> left;
+            if (left == "comments") {
+                continue; // 跳过注释行
+            }
+            ss >> assign >> right;
+            tokens.emplace_back(make_pair(left, right));
         }
     }
     else {
-        return "";
+        return "无法打开文件。";
     }
+
     // 初始化解析变量
-    tokens.push_back(make_pair("$", "END_C")); // 添加结束符
-    std::stack<AI> anaStk; // 状态栈
+    tokens.emplace_back(make_pair("$", "END_C")); // 添加结束符
+    stack<AI> anaStk; // 状态栈
     AI firstItem;
     firstItem.state = 0; // 初始状态
     anaStk.push(firstItem);
 
     // 语法树根节点
-    std::stack<std::shared_ptr<SyntaxTreeNode>> treeStack; // 用于存储树节点的栈
+    stack<shared_ptr<SyntaxTreeNode>> treeStack; // 用于存储树节点的栈
 
     // 解析过程
     int i = 0; // 词法单元索引
     while (!anaStk.empty()) {
         AI top = anaStk.top();
-        std::string currentString = tokens[i].first;
-        std::string currentToken = tokens[i].second;
-        std::string act = actionTable[top.state][currentToken];
+        string currentToken = tokens[i].first;
+        string currentString = tokens[i].second;
+        string act = actionTable[top.state][currentToken];
+        cout << currentToken << "->" << currentString << endl;
 
         // 检查是否存在操作
-        if (act == "")
-        {
-            resultss << "错误：" << top.state<<"->"<< "没有" << currentToken<<" 移入状态 \n";
+        if (act.empty()) {
+            resultss << "错误：在状态 " << top.state << " 下没有处理符号 " << currentToken << " 的操作。\n";
             break;
         }
 
         // 移进操作
         if (act[0] == 's') {
-            int nextState = std::stoi(act.substr(1));
-            resultss << "移进：将 " << currentString<<"->"<< currentToken << " 移入状态 " << nextState << "\n";
+            int nextState = stoi(act.substr(1));
+            resultss << "移进：将 " << currentString << " (" << currentToken << ") 移入状态 " << nextState << "\n";
+
             // 创建语法树节点
-            auto newNode = std::make_shared<SyntaxTreeNode>(currentToken);
+            auto newNode = make_shared<SyntaxTreeNode>(currentToken);
             newNode->tokenString = currentString; // 当前 token 字符串
             treeStack.push(newNode);
 
@@ -340,39 +341,84 @@ string LALR::Analysis(std::string filepath)
         }
         // 规约操作
         else if (act[0] == 'r') {
-            int prodIndex = std::stoi(act.substr(1)); // 获取产生式索引
+            int prodIndex = stoi(act.substr(1)); // 获取产生式索引
+            if (prodIndex < 0 || prodIndex >= G.ex_G.size()) {
+                resultss << "错误：产生式索引 " << prodIndex << " 超出范围。\n";
+                break;
+            }
             auto production = G.ex_G[prodIndex]; // G.ex_G 存储产生式
 
+            // 判断是否是空产生式
+            bool isEmptyProduction = (production.right.size() == 1 && production.right[0] == "@");
+
+            // 打印规约信息
             resultss << "规约：通过产生式 " << production.left << " -> ";
-            for (const auto& symbol : production.right) {
-                resultss << symbol << " ";
+            if (isEmptyProduction) {
+                resultss << "@\n";
             }
-            resultss << "\n";
+            else {
+                for (const auto& symbol : production.right) {
+                    resultss << symbol << " ";
+                }
+                resultss << "\n";
+            }
 
             // 创建语法树节点
-            auto newNode = std::make_shared<SyntaxTreeNode>(production.left);
+            auto newNode = make_shared<SyntaxTreeNode>(production.left);
             newNode->tokenString = production.left; // 当前产生式左部
-            for (const auto& symbol : production.right) {
-                // 从栈中弹出相应的节点
-                if (!treeStack.empty()) {
-                    newNode->children.push_back(treeStack.top());
-                    treeStack.pop();
+
+            if (!isEmptyProduction) {
+                // 规约非空产生式，弹出相应数量的节点并作为子节点
+                for (const auto& symbol : production.right) {
+                    if (!treeStack.empty()) {
+                        newNode->children.push_back(treeStack.top());
+                        treeStack.pop();
+                    }
                 }
             }
+            else {
+                // 规约空产生式，可以选择添加一个特殊的子节点，或不添加任何子节点
+                // 例如，添加一个表示空的节点：
+                // auto emptyNode = make_shared<SyntaxTreeNode>("@");
+                // newNode->children.push_back(emptyNode);
+                // 或者直接不添加子节点
+            }
 
-            // 将新节点压入栈中
+            // 将新节点压入语法树栈中
             treeStack.push(newNode);
 
-            // 根据产生式的长度弹出状态
-            for (size_t j = 0; j < production.right.size(); j++) {
-                anaStk.pop();
+            if (!isEmptyProduction) {
+                // 根据产生式的长度弹出状态栈
+                for (size_t j = 0; j < production.right.size(); j++) {
+                    if (!anaStk.empty()) {
+                        anaStk.pop();
+                    }
+                    else {
+                        resultss << "错误：状态栈为空，无法弹出。\n";
+                        break;
+                    }
+                }
+            }
+            // 对于空产生式，不弹出任何状态
+
+            if (anaStk.empty()) {
+                resultss << "错误：状态栈为空，无法获取 GOTO。\n";
+                break;
             }
 
             // 使用 GOTO 表确定下一个状态
             AI newTop = anaStk.top();
+            if (gotoTable.find(newTop.state) == gotoTable.end() ||
+                gotoTable[newTop.state].find(production.left) == gotoTable[newTop.state].end()) {
+                resultss << "错误：在状态 " << newTop.state << " 下没有找到非终结符 " << production.left << " 的 GOTO。\n";
+                break;
+            }
+
             int nextState = gotoTable[newTop.state][production.left];
+            resultss << "goto: 转移到状态 " << nextState << "\n";
+
             if (nextState == -1) {
-                resultss << "错误：在状态 " << newTop.state << " 下没有找到非终结符 " << production.left << " 的 GOTO\n";
+                resultss << "错误：在状态 " << newTop.state << " 下没有找到非终结符 " << production.left << " 的 GOTO。\n";
                 break;
             }
 
@@ -385,7 +431,10 @@ string LALR::Analysis(std::string filepath)
         // 接受操作
         else if (act == "accept") {
             resultss << "接受输入\n";
-            syntaxTreeRoot = treeStack.top(); // 获取语法树根节点
+            if (!treeStack.empty()) {
+                syntaxTreeRoot = treeStack.top(); // 获取语法树根节点
+                treeStack.pop();
+            }
             break;
         }
     }
@@ -475,6 +524,7 @@ void printAutomaton(const LALR& lalr, LR1NODE* start, QTableWidget* tableWidget)
 void printParsingTable(const LALR& lalr, QTableWidget* tableWidget) {
     tableWidget->clear();
     tableWidget->setRowCount(0);
+
     // 找出所有的符号
     std::unordered_set<std::string> symbols;
     for (const auto& stateActions : lalr.actionTable) {
@@ -488,6 +538,7 @@ void printParsingTable(const LALR& lalr, QTableWidget* tableWidget) {
         }
     }
 
+    // 创建表头
     QStringList headers;
     headers << "State";
     for (const auto& symbol : symbols) {
@@ -496,6 +547,7 @@ void printParsingTable(const LALR& lalr, QTableWidget* tableWidget) {
     tableWidget->setColumnCount(headers.size());
     tableWidget->setHorizontalHeaderLabels(headers);
 
+    // 填充表格
     for (const auto& stateActions : lalr.actionTable) {
         int state = stateActions.first;
         int currentRow = tableWidget->rowCount();
@@ -504,16 +556,26 @@ void printParsingTable(const LALR& lalr, QTableWidget* tableWidget) {
 
         for (const auto& symbol : symbols) {
             QString cellContent;
-            if (stateActions.second.find(symbol) != stateActions.second.end()) {
-                cellContent = QString::fromStdString(stateActions.second.at(symbol));
+
+            // 获取当前状态的动作
+            auto actionIt = stateActions.second.find(symbol);
+            if (actionIt != stateActions.second.end()) {
+                cellContent = QString::fromStdString(actionIt->second);
             }
-            if (lalr.gotoTable.find(state) != lalr.gotoTable.end() &&
-                lalr.gotoTable.at(state).find(symbol) != lalr.gotoTable.at(state).end()) {
-                if (!cellContent.isEmpty()) {
-                    cellContent += ", ";
+
+            // 获取当前状态的转移
+            auto gotoIt = lalr.gotoTable.find(state);
+            if (gotoIt != lalr.gotoTable.end()) {
+                auto goIt = gotoIt->second.find(symbol);
+                if (goIt != gotoIt->second.end()) {
+                    if (!cellContent.isEmpty()) {
+                        cellContent += ", ";
+                    }
+                    cellContent += "goto " + QString::number(goIt->second);
                 }
-                cellContent += "goto" + QString::number(lalr.gotoTable.at(state).at(symbol));
             }
+
+            // 设置单元格内容
             int column = headers.indexOf(QString::fromStdString(symbol));
             if (column != -1) {
                 tableWidget->setItem(currentRow, column, new QTableWidgetItem(cellContent));
@@ -525,4 +587,28 @@ void printParsingTable(const LALR& lalr, QTableWidget* tableWidget) {
     tableWidget->resizeColumnsToContents();
     tableWidget->horizontalHeader()->setStretchLastSection(true);
     tableWidget->verticalHeader()->setVisible(false);
+}
+void populateTreeView(const std::shared_ptr<SyntaxTreeNode> &node, QStandardItem *parentItem)
+{
+    if (!node) return;
+
+    // 创建当前节点的 QStandardItem
+    QStandardItem* currentItem = new QStandardItem(QString::fromStdString(node->tokenString));
+    parentItem->appendRow(currentItem);
+
+    // 递归处理子节点
+    for (const auto& child : node->children) {
+        populateTreeView(child, currentItem);
+    }
+}
+void LALR::printTreeView(QTreeView* treeView) {
+    QStandardItemModel* model = new QStandardItemModel(treeView);
+    model->setHorizontalHeaderLabels(QStringList() << "Syntax Tree");
+
+    if (syntaxTreeRoot) {
+        populateTreeView(syntaxTreeRoot, model->invisibleRootItem());
+    }
+
+    treeView->setModel(model);
+    treeView->expandAll(); // 展开所有项
 }

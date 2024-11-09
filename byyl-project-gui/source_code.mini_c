@@ -1,0 +1,37 @@
+int main(void)
+{
+    int a;
+    int iternet;
+    float b[10];
+    a = 5;
+    b[2] = 3.14;
+    if (a > 0) {
+        int i[90];
+        a = a * 3 ;
+        b[1] = b[2] / 8;
+        i[10]=10;
+    }
+    else
+    {
+        while (a < 10)
+        {
+            double d[10];
+            int m;
+            a=a+1;
+            m=0;
+
+            do {
+                d[m]=m;
+                m=m+1;
+            }
+            while (m<=9);
+        };
+    };
+    do
+    {
+        int c;
+        c=3;
+        b[2] =b[2] + 4;
+    } while (b[2] < 10);
+    return ;
+}

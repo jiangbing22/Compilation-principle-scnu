@@ -8,6 +8,7 @@
 #include<QMessageBox>
 #include <QMainWindow>
 #include<QTextEdit>
+#include<QStandardItem>
 #include <LALR.h>
 #include<DFA.h>
 QT_BEGIN_NAMESPACE
@@ -48,12 +49,17 @@ private slots:
 
     void on_savelex_Button_clicked();
 
+    void on_gettoken_Button_clicked();
+
+    void on_gentree_Button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString filePath;
     QString vectorToQString(const std::vector<int> &vec);
     QString sytanxCodePath;
     QString codePath;
+    QString lexPath;
 };
 void printFirstMap(QTextEdit* textEdit, const std::unordered_map<std::string, std::unordered_set<std::string>>& firstMap);
 void printFollowMap(QTextEdit* textEdit, const std::unordered_map<std::string, std::unordered_set<std::string>>& followMap);

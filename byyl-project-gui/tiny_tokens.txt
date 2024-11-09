@@ -1,19 +1,28 @@
 letter = [a-zA-Z]
 digit = [0-9]
-_id=(_|letter)(_|letter|digit)*
+_ID=(_|letter)(_|letter|digit)*
 _if = if|IF
 _then = then|THEN
 _else = else|ELSE
-_endif = endif|ENDIF
 _end = end|END
 _repeat = repeat|REPEAT
 _until = until|UNTIL
 _read = read|READ
 _write= write|WRITE
-_addop = \+|-
-_mulop = \*|/|%
-_comparisonop = <|=|<=|<>|>=|>
-_assignop = :=
+_add = \+
+_minus = -
+_mul = \*
+_div = /
+_mod = %
+_lt = <
+_gt = >
+_eq = =
+_le = <=
+_ge =  >=
+_uneq = <>
+_lparen = \(
+_rparen = \)
+_assign-op = :=
 _branch = ;
 _num=digit+
-_comments={(digit|letter|(_)|( )|(\+)|(\-)|(\*)|(/)|(%)|(^)|(<)|(>)|(=)|(:)|(;)|(\()|(\)))*}
+_comments={(digit|letter|(_)|(\n)|( )|(\+)|(\-)|(\*)|(/)|(%)|(^)|(<)|(>)|(=)|(:)|(;)|(\()|(\)))*}

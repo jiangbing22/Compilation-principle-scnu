@@ -35,8 +35,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    min_cgrammar.txt \
+    min_c文法.txt \
     mini_c_tokens.txt \
     minic_test_code.txt \
+    source_code.mini_c \
     testgrammar.txt \
+    tiny_grammar.txt \
     tiny_test_code.txt \
     tiny_tokens.txt

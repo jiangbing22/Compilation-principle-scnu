@@ -120,7 +120,7 @@ void DFA_graph::build_from_NFA(vector<NFA_graph> NFA) {
 
                 if (isStrictMatch) {
                     // 检查是否有非 "id" 的终态
-                    if (end_info.second != "id") {
+                    if (end_info.second != "ID") {
                         hasNonIdEnd = true;
                         this->end.insert(state_index);
                         endstring[state_index] = end_info.second;
@@ -291,7 +291,7 @@ string DFA_graph::generateCode() {
     code += "    ostringstream oss;\n";
     code += "    string line;\n";
     code += "    while (getline(infile, line)) {\n";
-    code += "        oss << line << '\n';\n"; // 用空格替换换行符
+    code += "        oss << line << '\\n';\n"; // 用空格替换换行符
     code += "    }\n";
     code += "    input = oss.str();\n"; // 获取合并后的字符串
     code += "    int idx = 0;\n";
@@ -315,10 +315,19 @@ string DFA_graph::generateCode() {
         code += "                        switch (input[idx]) {\n";
         for (auto item : minimizeGraph[i]) {
             if (item.second != -1) {
+                if(item.first!='\n'){
                 code += "                            case \'" + string(1, item.first) + "\':\n";
                 code += "                                state = " + to_string(item.second) + ";\n";
                 code += "                                tokenstring += input[idx];\n";
                 code += "                                break;\n";
+                }
+                else
+                {
+                    code += "                            case '\\n': \n";
+                    code += "                                state = " + to_string(item.second) + ";\n";
+                    code += "                                break;\n";
+                }
+
             }
         }
         code += "                            default:\n";
@@ -344,7 +353,7 @@ string DFA_graph::generateCode() {
         if (++cnt != minimize_end.size()) code += " || ";
     }
     code += ") {\n";
-    code += "                    outfile << tokenstring << \" -> \" << endmap[laststate] << endl;\n";
+    code += "                    outfile <<\"\"<< endmap[laststate] << \" -> \" << tokenstring  << endl;\n";
     code += "                    idx--;\n";
     code += "                } else {\n";
     code += "                    outfile << \"Invalid token: \" << tokenstring << endl;\n";
@@ -357,7 +366,7 @@ string DFA_graph::generateCode() {
         if (++cnt != minimize_end.size()) code += " || ";
     }
     code += ") {\n";
-    code += "                    outfile << tokenstring << \" -> \" << endmap[state] << endl;\n";
+    code += "                    outfile <<\"\"<< endmap[state] << \" -> \" << tokenstring  << endl;\n";
     code += "                } else {\n";
     code += "                    outfile << \"Invalid token: \" << tokenstring << endl;\n";
     code += "                }\n";

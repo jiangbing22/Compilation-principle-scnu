@@ -9,17 +9,27 @@ _return = return
 _void = void
 _while = while
 _do = do
-_mulop = \*|/|%|^
-_addop = \+|-
-_relop = <=|<|>|>=|==|!=
+_mul = \*
+_div = /
+_mod = %
+_add = \+
+_minus = -
+_lt = <
+_gt = >
+_eq = =
+_le = <=
+_ge =  >=
+_uneq = !=
+_assignop = =
 _branch = ;
 _Lparen = \(
 _Rparen = \)
 _Lbracket = \[
-_Rbrecket = \]
+_Rbracket = \]
 _Lbrace = {
 _Rbrace = }
-_id=(_|letter)((_|letter)|digit)*
-_num = (digit)+(.digit+)?
-_addition = //(digit|letter|(_)|( )|(\+)|(\-)|(\*)|(/)|(%)|(^)|(<)|(>)|(=)|(:)|(;)|(\()|(\)))*
 _comon = ,
+_ID=(_|letter)((_|letter)|digit)*
+_NUM = (digit)+(.digit+)?
+_comments = //(digit|letter|(_)|( )|(\+)|(\-)|(\*)|(/)|(%)|(^)|(<)|(>)|(=)|(:)|(;)|(\()|(\)))*
+

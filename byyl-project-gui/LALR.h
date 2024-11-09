@@ -1,5 +1,5 @@
 #pragma once
-#include"grammar.h"	
+#include"grammar.h"
 #include <iostream>
 #include <sstream>
 #include <queue>
@@ -7,6 +7,8 @@
 #include<stack>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QStandardItemModel>
+#include <QTreeView>
 // LR1项的结构
 using namespace std;
 struct AI {
@@ -150,8 +152,9 @@ public:
 
     friend void printAutomaton(const LALR& lalr, LR1NODE* start, QTableWidget* tableWidget);
     friend void printParsingTable(const LALR& lalr, QTableWidget* tableWidget);
+    void printTreeView(QTreeView *treeView);
 };
 void printAutomaton(const LALR& lalr, LR1NODE* start, QTableWidget* tableWidget);
 void printParsingTable(const LALR& lalr, QTableWidget* tableWidget);
-
+void populateTreeView(const std::shared_ptr<SyntaxTreeNode>& node, QStandardItem* parentItem);
 

@@ -126,9 +126,15 @@ void NFA_graph::build_NFA(RE re)
         else if (*c == '\\')
         {
             c++;
-            std::cout << *c<<endl;
             NFA_graph temp;
-            temp.init(*c);
+            if(*c == 'n')
+            {
+                temp.init('\n');
+            }
+            else
+            {
+                temp.init(*c);
+            }
             stk.emplace(temp);
         }
         else

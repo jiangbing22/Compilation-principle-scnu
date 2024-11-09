@@ -23,52 +23,70 @@ bool addToSet(std::unordered_set<std::string>& set1, const std::unordered_set<st
     }
     return changed;
 }
-void grammar::createExG()
-{
-    int grammarnum = 1;//编号
+void grammar::createExG() {
+    int grammarnum = 0; // 编号
     for (const auto& nonTerminal : unendSet) {
-        nullMap[nonTerminal] = false;
+        nullMap[nonTerminal] = false; // 初始化空映射
     }
-    bool flag = 0;
-    for (auto i : G)
-    {
-        auto itr = i.right.begin();
-        while (itr != i.right.end())
-        {
-            //std::cout << *itr;
-            auto last = itr;
-            itr = std::find(itr, i.right.end(), "|");
-            if (!flag)
-            {
-                flag = 1;
+
+    bool isFirstProduction = true; // 用于标记是否为第一条生成式
+
+    for (const auto& production : G) {
+        // 将右部符号按 '|' 分割成多个选择
+        std::vector<std::vector<std::string>> alternatives;
+        std::vector<std::string> current;
+        for (const auto& sym : production.right) {
+            if (sym == "|") {
+                if (!current.empty()) {
+                    alternatives.push_back(current);
+                    current.clear();
+                }
+            }
+            else {
+                current.push_back(sym);
+            }
+        }
+        if (!current.empty()) {
+            alternatives.push_back(current);
+        }
+
+        // 处理每个选择
+        for (const auto& alternative : alternatives) {
+            // 如果是第一条产生式，创建增广文法的起始项
+            if (isFirstProduction) {
                 grammarNode newnode;
-                newnode.left = first + "^";
-                newnode.right.push_back(first);
-                this->ex_G.push_back(newnode);
+                newnode.left = production.left + "^"; // 增广文法左部
+                newnode.right.push_back(production.left); // 起始符号
+                ex_G.push_back(newnode);
+                std::cout << grammarnum << ":" << newnode.left + newnode.right2str() << std::endl;
+                itemMap[newnode.left + newnode.right2str()] = grammarnum++;
+                isFirstProduction = false; // 设置为已处理
             }
+
             grammarNode newnode;
-            newnode.left = i.left;
-            for (auto j = last; j < itr; j++)
-            {
-                newnode.right.push_back(*j);
-                if (unendSet.find(*j) == unendSet.end())
-                {
-                    endSet.insert(*j);
-                }
-                if (*j == "@")
-                {
-                    nullMap[i.left] = true;
+            newnode.left = production.left;
+
+            // 检查当前选择是否为 'empty'
+            if (alternative.size() == 1 && alternative[0] == "empty") {
+                newnode.right.push_back("@"); // 使用 '@' 表示空串
+                nullMap[production.left] = true; // 更新空映射
+            }
+            else {
+                for (const auto& sym : alternative) {
+                    newnode.right.push_back(sym); // 添加右部符号
+                    if (unendSet.find(sym) == unendSet.end()) {
+                        endSet.insert(sym); // 更新终结符集
+                    }
                 }
             }
-            ex_G.push_back(newnode);
-            itemMap[newnode.left + newnode.right2str()] = grammarnum;
-            if (itr != i.right.end())
-            {
-                itr++;
-            }
+
+            ex_G.push_back(newnode); // 添加到增广文法
+            std::cout << grammarnum << ":" << newnode.left + newnode.right2str() << std::endl; // 输出当前生成式
+            itemMap[newnode.left + newnode.right2str()] = grammarnum++; // 更新映射表
         }
     }
 }
+
 
 void grammar::createFirst() {
     // 初始化firstMap，所有非终结符的FIRST集合为空集
@@ -84,20 +102,24 @@ void grammar::createFirst() {
             const std::string& left = rule.left;
             const std::vector<std::string>& right = rule.right;
 
-            bool epsilonFound = true; 
+            bool epsilonFound = true;
             for (size_t i = 0; i < right.size(); ++i) {
                 const std::string& symbol = right[i];
 
-                // 如果符号是终结符，将其添加到FIRST(left)
-                if (symbol == "@")
-                {
+                // 如果符号是空串，直接添加到FIRST集合并停止
+                if (symbol == "@") {
+                    if (firstMap[left].insert("@").second) {
+                        changed = true;
+                    }
                     break;
                 }
+
                 if (!isNonTerminal(symbol, unendSet)) {
+                    // 终结符直接添加到FIRST集合
                     if (firstMap[left].insert(symbol).second) {
                         changed = true;
                     }
-                    epsilonFound = false;  // 终结符不能生成空串
+                    epsilonFound = false; // 终结符不能生成空串
                     break;
                 }
                 else {
@@ -105,31 +127,32 @@ void grammar::createFirst() {
                     if (addToSet(firstMap[left], firstMap[symbol])) {
                         changed = true;
                     }
-                    // 如果FIRST(symbol)不包含ε，则不再继续处理下一个符号
+                    // 如果symbol的FIRST集合不包含空串，则停止
                     if (!nullMap[symbol]) {
                         epsilonFound = false;
                         break;
                     }
                 }
             }
-                        
-            // 如果当前产生式右部所有符号都能生成空串，则first集里有空串
+
+            // 如果所有符号都能生成空串，则将空串加入FIRST集合
             if (epsilonFound) {
-                nullMap[left] = true;
+                if (!nullMap[left]) { // 仅当之前没有设置为空时才标记
+                    nullMap[left] = true;
+                    changed = true;
+                }
             }
         }
     }
-    for (const auto& nonTerminal : unendSet) {        
-        if (nullMap[nonTerminal])
-        {
+
+    // 将能生成空串的非终结符的FIRST集合中加入 '@'
+    for (const auto& nonTerminal : unendSet) {
+        if (nullMap[nonTerminal]) {
             firstMap[nonTerminal].insert("@");
         }
     }
-    //for (auto i : nullMap)
-    //{
-    //    std::cout << i.first << i.second << std::endl;
-    //}
 }
+
 void grammar::createFollow() {
     // 初始化followMap，所有非终结符的FOLLOW集合为空集
     for (const auto& nonTerminal : unendSet) {
@@ -210,9 +233,8 @@ void grammar::createFollow() {
             }
         }
     }
-
-
 }
+
 
 
 grammar::grammar(const std::string filepath) {
@@ -224,17 +246,21 @@ grammar::grammar(const std::string filepath) {
             std::stringstream ss(sentence);
             std::string left, assign, right;
             grammarNode newnode;
-            ss >> left >> assign;
+            ss >> left >> assign; // 读取左部和赋值符号（如 '->'）
+
             if (!flag) {
                 flag = true;
-                first = left;
+                first = left; // 设置开始符号
             }
-            unendSet.insert(left);
+
+            unendSet.insert(left); // 添加到非终结符集合
             newnode.left = left;
+
             while (ss >> right) {
-                newnode.right.push_back(right);
+                newnode.right.push_back(right); // 读取右部符号，包括 '|'
             }
-            G.push_back(newnode);
+
+            G.push_back(newnode); // 添加到文法集合
         }
     }
     else {
@@ -245,3 +271,4 @@ grammar::grammar(const std::string filepath) {
     createFollow();
     return;
 }
+

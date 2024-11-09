@@ -1,17 +1,17 @@
 {this a tiny program}
-x:=1
-y:=2
+x:=1;
+y:=2;
 REPEAT
-    x = x + y
+    x := x + 12;
 until
-    x > 10
-if
-    x <> 2 * y
+    x > 10;
+if x <> 2 * y
 then
-    x := y + 10
+    x := y + 10;
 else
-    x := y - 1000
-endif
-end
+    x := y - 1000;
+end;
+read x;
+write y
 { test
 this is a mutirows comments}
