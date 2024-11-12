@@ -371,7 +371,15 @@ string LALR::Analysis(string filepath)
                 // 规约非空产生式，弹出相应数量的节点并作为子节点
                 for (const auto& symbol : production.right) {
                     if (!treeStack.empty()) {
-                        newNode->children.push_back(treeStack.top());
+                        if (treeStack.top()->tokenString != "Lparen" &&
+                            treeStack.top()->tokenString != "Rparen" &&
+                            treeStack.top()->tokenString != "branch" &&
+                            treeStack.top()->tokenString != "Lbrace" &&
+                            treeStack.top()->tokenString != "Rbrace" &&
+                            treeStack.top()->tokenString != "comon")
+                        {
+                            newNode->children.push_back(treeStack.top());
+                        }
                         treeStack.pop();
                     }
                 }

@@ -205,7 +205,7 @@
     <item>
      <widget class="QTabWidget" name="LALR1t">
       <property name="currentIndex">
-       <number>6</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="grammarr">
        <attribute name="title">
@@ -307,7 +307,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_11">
           <property name="text">
-           <string>LR（1）DFA状态转移表</string>
+           <string>LALR（1）DFA状态转移表</string>
           </property>
          </widget>
         </item>
