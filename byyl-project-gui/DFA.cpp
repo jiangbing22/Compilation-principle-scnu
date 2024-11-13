@@ -140,10 +140,17 @@ void DFA_graph::build_from_NFA(vector<NFA_graph> NFA) {
 
 void DFA_graph::minimize()
 {
+    // 清空最小化图
     minimizeGraph.clear();
+    // 清空最小化图的结束状态
     minimize_end.clear();
+
+    // 获取当前图的结束状态集合
     set<int> end_set_index = this->end;
+    // 获取非结束状态集合
     set<int> else_set_index;
+
+    // 遍历状态映射，将结束状态添加到非结束状态集合中
     for (auto i : state_map)
     {
         if (this->end.find(i.second) != this->end.end())
@@ -151,30 +158,48 @@ void DFA_graph::minimize()
             else_set_index.insert(i.second);
         }
     }
+
+    // 初始化分区图
     vector<map<char, string>> partition_graph;
+
+    // 遍历当前图的每个状态
     for (auto state : this->Graph)
     {
         auto t_map = state.second;
         map<char, string> result;
+
+        // 遍历DFA的键集
         for (auto key : DFA_key_set)
         {
+            // 如果当前状态在key下的转移为空，则赋值为"-1"
             if (t_map[key].empty())
             {
                 result[key] = "-1";
             }
             else
             {
-                result[key] =to_string(state_map[vectorToString(t_map[key])]);
+                // 否则，将转移状态映射为字符串
+                result[key] = to_string(state_map[vectorToString(t_map[key])]);
             }
         }
+        // 将结果添加到分区图中
         partition_graph.push_back(result);
     }
-    unordered_map<string, int>p_map;
+
+    // 初始化状态映射表
+    unordered_map<string, int> p_map;
+    // 初始化分区标签集合
     set<int> partition_tag;
-    unordered_map<int, int>index_map;
+    // 初始化状态索引映射表
+    unordered_map<int, int> index_map;
+
+    // 遍历分区图
     for (int i = 0; i < partition_graph.size(); i++)
     {
+        // 将分区图转换为字符串作为键
         string map_key = mapToString(partition_graph[i]);
+
+        // 如果当前状态是结束状态，则在键后添加" end"和结束状态字符串
         if (end_set_index.find(i) != end_set_index.end())
         {
             map_key += " end";
@@ -182,21 +207,28 @@ void DFA_graph::minimize()
         }
         else
         {
+            // 否则，在键后添加" else"
             map_key += " else";
         }
+
+        // 如果当前键不在状态映射表中，则添加
         if (p_map.find(map_key) == p_map.end())
         {
             p_map[map_key] = i;
+            // 将当前索引添加到分区标签集合中
             partition_tag.insert(i);
-
         }
         else
         {
+            // 否则，将当前索引映射到已存在的键对应的索引
             index_map[i] = p_map[map_key];
         }
     }
+
+    // 遍历结束状态集合
     for (auto i : end_set_index)
     {
+        // 如果当前结束状态在索引映射表中有映射，则更新最小化图的结束状态和结束状态字符串
         if (index_map.find(i) != index_map.end())
         {
             minimize_end.insert(index_map[i]);
@@ -204,36 +236,44 @@ void DFA_graph::minimize()
         }
         else
         {
+            // 否则，直接将当前结束状态添加到最小化图的结束状态中，并更新结束状态字符串
             minimize_end.insert(i);
             minendstring[i] = endstring[i];
         }
     }
 
-
+    // 遍历分区标签集合
     for (auto i : partition_tag)
     {
         auto t_map = Graph[i].second;
+
+        // 遍历DFA的键集
         for (auto key : DFA_key_set)
         {
             if (!t_map[key].empty())
             {
+                // 获取转移状态的索引
                 int index = state_map[vectorToString(t_map[key])];
 
+                // 如果转移状态的索引在索引映射表中有映射，则更新最小化图中当前状态的转移
                 if (index_map.find(index) != index_map.end())
                 {
                     minimizeGraph[i][key] = index_map[index];
                 }
                 else
                 {
+                    // 否则，直接将转移状态的索引添加到最小化图中
                     minimizeGraph[i][key] = index;
                 }
             }
             else
             {
+                // 如果转移为空，则设置为-1
                 minimizeGraph[i][key] = -1;
             }
         }
     }
+
     return;
 }
 

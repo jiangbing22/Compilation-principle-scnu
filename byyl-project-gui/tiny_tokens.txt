@@ -20,8 +20,8 @@ _eq = =
 _le = <=
 _ge =  >=
 _uneq = <>
-_lparen = \(
-_rparen = \)
+_Lparen = \(
+_Rparen = \)
 _assign-op = :=
 _branch = ;
 _num=digit+

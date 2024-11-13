@@ -22,9 +22,6 @@ struct AI {
 struct SyntaxTreeNode {
     string tokenString;//当前值
     vector<shared_ptr<SyntaxTreeNode>>children;//孩子节点
-    /*
-    * 构造函数
-    */
     SyntaxTreeNode() :tokenString("") {};
     /*
     * 构造函数
@@ -32,21 +29,27 @@ struct SyntaxTreeNode {
     SyntaxTreeNode(string value) : tokenString(value) {}
 };
 struct LR1Item {
-    std::string lhs;
-    std::vector<std::string> rhs;
-    int dotPos;
-    std::string lookahead;
-    std::string rhs2str() const
+    std::string lhs;           // 左手边非终结符
+    std::vector<std::string> rhs; // 右手边产生式序列，用vector<string>表示
+    int dotPos;                // 点号位置，表示当前已经处理到rhs中的哪个位置
+    std::string lookahead;     // 向前看符号
+
+    std::string rhs2str() const // 将rhs转换成字符串
     {
-        std::string result;
-        for (auto i : rhs)
+        std::string result;    // 初始化结果字符串
+        for (auto i : rhs)     // 遍历rhs中的每个元素
         {
-            result += i;
+            result += i;       // 将元素累加到结果字符串中
         }
-        return result;
+        return result;         // 返回结果字符串
     }
-    bool operator==(const LR1Item& other) const {
-        return lhs == other.lhs && rhs == other.rhs && dotPos == other.dotPos && lookahead == other.lookahead;
+
+    bool operator==(const LR1Item& other) const // 重载==运算符，用于比较两个LR1Item是否相等
+    {
+        return lhs == other.lhs &&         // 比较左手边非终结符
+               rhs == other.rhs &&         // 比较右手边产生式序列
+               dotPos == other.dotPos &&   // 比较点号位置
+               lookahead == other.lookahead; // 比较向前看符号
     }
 };
 
@@ -100,10 +103,10 @@ namespace std {
     };
 }
 struct LR1NODE {
-    std::unordered_set<LR1Item> items;
-    std::unordered_map<std::string, LR1NODE*> state;
-    int stateNum;
-    std::string core;
+    std::unordered_set<LR1Item> items; // 存储该节点包含的LR1项目集合，使用无序集合来保证项目的唯一性
+    std::unordered_map<std::string, LR1NODE*> state; // 表示根据某个符号转移到的下一个状态，键为符号，值为指向下一个状态的指针
+    int stateNum; // 状态编号，用于标识不同的状态节点
+    std::string core; // 核心项目，用于合并不同状态节点
 };
 
 class LALR

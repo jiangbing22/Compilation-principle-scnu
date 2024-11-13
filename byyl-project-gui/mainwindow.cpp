@@ -408,7 +408,6 @@ void MainWindow::on_startana_Button_clicked()
     // 定义输出可执行文件路径和输出文本文件路径
     QString outputExecutable = "output_program";
     QString outputTextFile = "snyta_output.txt";
-
     // 使用 g++ 编译代码文件
     QProcess compileProcess;
     compileProcess.start("g++", QStringList() << this->sytanxCodePath << "-o" << outputExecutable);

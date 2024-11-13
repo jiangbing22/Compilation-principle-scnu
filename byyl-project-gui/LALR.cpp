@@ -2,68 +2,97 @@
 
 std::string LALR::countcore(std::unordered_set<LR1Item> itemset)
 {
-
     // 收集当前节点的核心项目集
     std::unordered_set <std::string> coreset;
+    // 遍历项目集
     for (const auto& item : itemset) {
+        // 初始化字符串，内容为当前项目的左侧符号
         std::string str = item.lhs;
+        // 遍历右侧符号
         for (auto j : item.rhs)
         {
+            // 将右侧符号依次追加到字符串中
             str += j;
         }
+        // 将点位置追加到字符串中
         str += item.dotPos;
+        // 将生成的字符串插入到核心项目集中
         coreset.insert(str);
     }
     std::string result;
+    // 遍历核心项目集
     for (auto i : coreset)
     {
+        // 将核心项目集中的字符串依次追加到结果字符串中
         result += i;
     }
     // std::cout << result;
     return result;
 }
 
-// 闭包函数，用于计算LR1项目集的闭包。
+// LALR类的closure函数，用于计算LR(1)项集的闭包
 std::unordered_set<LR1Item> LALR::closure(const std::unordered_set<LR1Item>& items) {
+    // 初始化闭包集合为传入的项集
     std::unordered_set<LR1Item> closureSet = items;
+    // 标记是否有新的项被添加到闭包集合中
     bool added;
 
+    // 循环直到没有新的项被添加到闭包集合中
     do {
         added = false;
+        // 遍历闭包集合中的每一项
         for (const auto& item : closureSet) {
+            // 如果项的点号位置不在最右端
             if (item.dotPos < item.rhs.size()) {
+                // 获取点号位置的符号
                 std::string symbol = item.rhs[item.dotPos];
+                // 如果该符号是非终结符
                 if (G.unendSet.find(symbol) != G.unendSet.end()) {
+                    // 遍历文法中的所有产生式
                     for (const auto& prod : G.ex_G) {
+                        // 如果产生式的左部是当前的非终结符
                         if (prod.left == symbol) {
                             std::unordered_set<std::string> lookaheads;
-                            // Calculate lookaheads correctly
+                            // 正确计算该产生式对应的向前看符号集合
+
+                            // 如果点号位置的下一个符号存在
                             if (item.dotPos + 1 < item.rhs.size()) {
-                                bool isNull = true;
+                                bool isNull = true;  // 标记从点号位置后的符号是否都能推导出空串
+                                // 遍历点号位置后的所有符号
                                 for (int next = item.dotPos + 1; next < item.rhs.size(); ++next) {
                                     std::string nextSymbol = item.rhs[next];
+                                    // 如果下一个符号是终结符
                                     if (G.unendSet.find(nextSymbol) == G.unendSet.end()) {
-                                        lookaheads.insert(nextSymbol);
-                                        isNull = false;
-                                        break;
-                                    } else if (G.nullMap[nextSymbol]) {
+                                        lookaheads.insert(nextSymbol);  // 将其加入向前看符号集合
+                                        isNull = false;  // 标记不能推导出空串
+                                        break;  // 终止循环
+                                    } 
+                                    // 如果下一个符号是非终结符且能推导出空串
+                                    else if (G.nullMap[nextSymbol]) {
                                         lookaheads.insert(G.firstMap[nextSymbol].begin(), G.firstMap[nextSymbol].end());
-                                        lookaheads.erase("@");
-                                    } else {
+                                        lookaheads.erase("@");  // 去除空串标记
+                                    } 
+                                    // 如果下一个符号是非终结符但不能推导出空串
+                                    else {
                                         lookaheads.insert(G.firstMap[nextSymbol].begin(), G.firstMap[nextSymbol].end());
-                                        isNull = false;
-                                        break;
+                                        isNull = false;  // 标记不能推导出空串
+                                        break;  // 终止循环
                                     }
                                 }
+                                // 如果从点号位置后的所有符号都能推导出空串
                                 if (isNull) {
                                     lookaheads.insert(G.followMap[item.lhs].begin(), G.followMap[item.lhs].end());
                                 }
-                            } else {
-                                lookaheads.insert(item.lookahead);
+                            } 
+                            // 如果点号位置是产生式右部的最右端
+                            else {
+                                lookaheads.insert(item.lookahead);  // 直接将该项的向前看符号加入集合
                             }
 
+                            // 为新的项设置向前看符号，并尝试加入闭包集合
                             for (const auto& lookahead : lookaheads) {
                                 LR1Item newItem{symbol, prod.right, 0, lookahead};
+                                // 如果成功加入，则标记有新项被添加
                                 if (closureSet.insert(newItem).second) {
                                     added = true;
                                 }
@@ -73,130 +102,183 @@ std::unordered_set<LR1Item> LALR::closure(const std::unordered_set<LR1Item>& ite
                 }
             }
         }
-    } while (added);
+    } while (added);  // 如果有新项被添加，则继续循环
+
+    // 返回最终的闭包集合
     return closureSet;
 }
 
 std::unordered_set<LR1Item> LALR::gotoState(const std::unordered_set<LR1Item>& items, const std::string& symbol) {
+    // 创建一个新的goto集合
     std::unordered_set<LR1Item> gotoSet;
+
+    // 遍历输入的items集合
     for (const auto& item : items) {
+        // 判断当前item的点是否在产生式右侧字符串的中间，并且该位置字符与symbol相同
         if (item.dotPos < item.rhs.size() && item.rhs[item.dotPos] == symbol) {
+            // 将满足条件的item加入gotoSet，同时将点的位置加1
             gotoSet.insert({ item.lhs, item.rhs, item.dotPos + 1, item.lookahead });
         }
     }
+
+    // 返回gotoSet的闭包
     return closure(gotoSet);
 }
 
 void LALR::createLR1Automaton() {
+    // 初始化起始项目集合
     std::unordered_set<LR1Item> startItems;
+    // 插入起始项目 {G.ex_G[0].left, { G.ex_G[0].right[0] }, 0, "$"}
     startItems.insert({ G.ex_G[0].left, { G.ex_G[0].right[0] }, 0, "$" });
 
+    // 创建头节点
     head = new LR1NODE{};
+    // 创建一个队列用于存储状态集合
     std::queue<std::unordered_set<LR1Item>> stateQueue;
+    // 将起始项目的闭包集合推入队列
     stateQueue.push(closure(startItems));
 
+    // 创建一个哈希表用于存储状态集合与节点的映射关系
     std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap;
+    // 将起始状态的闭包集合映射到头节点
     stateMap[stateQueue.front()] = head;
 
+    // 初始化状态编号
     int stateNum = 0;
 
+    // 当队列不为空时循环处理
     while (!stateQueue.empty()) {
+        // 从队列中取出当前状态集合
         auto currentState = stateQueue.front();
         stateQueue.pop();
 
+        // 从状态映射表中找到当前状态集合对应的节点
         LR1NODE* currentNode = stateMap[currentState];
+        // 设置当前节点的状态编号
         currentNode->stateNum = stateNum++;
+        // 设置当前节点的项目集合
         currentNode->items = currentState;
-
-        // 将当前状态映射到 indexmap
+        // 将当前节点添加到 indexmap 中
         indexmap.push_back(currentNode);
-
+        // 创建一个哈希表用于存储符号转换关系
         std::unordered_map<std::string, std::unordered_set<LR1Item>> symbolTransitions;
+        // 遍历当前状态集合中的每个项目
         for (const auto& item : currentState) {
+            // 如果当前项目的点位置小于右侧符号集合的大小
             if (item.dotPos < item.rhs.size()) {
+                // 将当前项目添加到对应符号的转换集合中
                 symbolTransitions[item.rhs[item.dotPos]].insert(item);
             }
         }
 
+        // 遍历符号转换关系
         for (const auto& transition : symbolTransitions) {
+            // 获取符号
             auto symbol = transition.first;
+            // 获取新状态集合
             auto newState = gotoState(currentState, symbol);
 
+            // 如果新状态集合在状态映射表中不存在
             if (stateMap.find(newState) == stateMap.end()) {
+                // 创建新节点
                 LR1NODE* newNode = new LR1NODE{};
+                // 将新状态集合映射到新节点
                 stateMap[newState] = newNode;
+                // 将新状态集合推入队列
                 stateQueue.push(newState);
             }
+            // 设置当前节点的符号转换关系
             currentNode->state[symbol] = stateMap[newState];
         }
     }
 }
-
 // 合并同心项目集生成LALR(1)自动机
 void LALR::createLALRAutomaton() {
+    // 初始化开始项集，包含文法G的第一个产生式
     std::unordered_set<LR1Item> startItems;
     startItems.insert({ G.ex_G[0].left, {G.ex_G[0].right[0]}, 0, "$" });
-    LALRhead = new LR1NODE{};
-    std::queue<std::unordered_set<LR1Item>> stateQueue;
-    stateQueue.push(closure(startItems));
 
+    // 创建LALR自动机的根节点
+    LALRhead = new LR1NODE{};
+    
+    // 队列，用于处理状态集合
+    std::queue<std::unordered_set<LR1Item>> stateQueue;
+    stateQueue.push(closure(startItems)); // 将闭包的起始项集入队列
+
+    // 状态映射表，将状态集合映射到对应的LR1节点
     std::unordered_map<std::unordered_set<LR1Item>, LR1NODE*> stateMap;
+    // 核心映射表，映射到不同状态的核心
     std::unordered_map<std::string, LR1NODE*> coreMap;
 
+    // 获取初始核心并将其添加到核心映射表
     auto initialCore = countcore(stateQueue.front());
     coreMap[initialCore] = LALRhead;
     stateMap[stateQueue.front()] = LALRhead;
+
+    // 状态编号，从1开始
     int stateNum = 1;
 
+    // 开始循环，直到状态队列为空
     while (!stateQueue.empty()) {
+        // 从队列中取出当前状态
         auto currentState = stateQueue.front();
         stateQueue.pop();
         LR1NODE* currentNode = stateMap[currentState];
-        currentNode->stateNum = stateNum++;
-        currentNode->items = currentState;
-        // indexmap.push_back(currentNode);
+        currentNode->stateNum = stateNum++; // 设置状态编号
+        currentNode->items = currentState;  // 设置该状态的项目集
 
+        // 创建一个映射，用于记录符号到状态的转移
         std::unordered_map<std::string, std::unordered_set<LR1Item>> symbolTransitions;
+        
+        // 遍历当前状态集中的所有项目
         for (const auto& item : currentState) {
+            // 如果点不在产生式的末尾，继续对下一个符号进行转移
             if (item.dotPos < item.rhs.size()) {
                 symbolTransitions[item.rhs[item.dotPos]].insert(item);
             }
         }
 
+        // 遍历符号转移，处理每个符号的转移
         for (const auto& transition : symbolTransitions) {
-            auto symbol = transition.first;
+            auto symbol = transition.first; // 当前转移符号
+            // 根据符号计算新的状态
             auto newState = gotoState(currentState, symbol);
-            newState = closure(newState);
+            newState = closure(newState); // 计算闭包
 
+            // 如果新的状态非空
             if (!newState.empty()) {
-                auto newCore = countcore(newState);
+                auto newCore = countcore(newState); // 获取新的核心
 
+                // 如果核心不存在，则创建新的节点并将其加入队列
                 if (coreMap.find(newCore) == coreMap.end()) {
                     LR1NODE* newNode = new LR1NODE{};
                     stateMap[newState] = newNode;
                     coreMap[newCore] = newNode;
-                    stateQueue.push(newState);
-                    currentNode->state[symbol] = newNode;
+                    stateQueue.push(newState); // 将新状态入队
+                    currentNode->state[symbol] = newNode; // 设置当前状态到新节点的转移
 
-                    newNode->stateNum = stateNum++;
+                    newNode->stateNum = stateNum++; // 新状态编号
                     std::cout << "Created new state: " << newNode->stateNum << " with core: " << newCore << std::endl;
                 } else {
+                    // 如果该核心已经存在，则合并状态
                     auto existingNode = coreMap[newCore];
                     for (const auto& item : newState) {
-                        if (!item.lookahead.empty()||!item.lhs.empty()||!item.rhs.empty()) { // 确保lookahead不为空
+                        if (!item.lookahead.empty() || !item.lhs.empty() || !item.rhs.empty()) { // 确保lookahead不为空
                             existingNode->items.insert(item);
                         }
                     }
-                    currentNode->state[symbol] = existingNode;
+                    currentNode->state[symbol] = existingNode; // 更新转移到已有节点
 
                     std::cout << "Merged with existing state: " << existingNode->stateNum << " for core: " << newCore << std::endl;
                 }
             } else {
+                // 如果新状态为空，则跳过
                 std::cout << "Skipped empty new state for symbol: " << symbol << std::endl;
             }
         }
     }
 }
+
 void LALR::generateParsingTable() {
     // 初始化 action 表和 goto 表
     int numStates = indexmap.size();
