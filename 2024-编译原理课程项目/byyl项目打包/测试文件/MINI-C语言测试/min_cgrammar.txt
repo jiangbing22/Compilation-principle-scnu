@@ -1,0 +1,31 @@
+program -> definition-list
+definition-list -> definition-list definition | definition
+definition -> variable-definition | function-definition
+variable-definition -> type-indicator ID branch | type-indicator ID Lbracket NUM Rbracket branch
+type-indicator -> int | float | double | void
+function-definition -> type-indicator ID Lparen parameters Rparen compound-stmt
+parameters -> parameter-list | void
+parameter-list -> parameter-list comon parameter | parameter
+parameter -> type-indicator ID | type-indicator ID Lbracket Rbracket
+compound-stmt -> Lbrace local-definitions statement-list Rbrace
+local-definitions -> local-definitions variable-definition | empty
+statement-list -> statement-list statement | empty
+statement -> expression-stmt | compound-stmt | condition-stmt | dowhile-stmt | return-stmt | while-stmt
+while-stmt -> while Lparen expression Rparen statement branch
+expression-stmt -> expression branch | branch
+condition-stmt -> if Lparen expression Rparen statement | if Lparen expression Rparen statement else statement
+dowhile-stmt -> do statement while Lparen expression Rparen branch
+return-stmt -> return branch | return expression branch
+expression -> variable assignop expression | simple-expression
+variable -> ID | ID Lbracket expression Rbracket
+simple-expression -> additive-expression relop additive-expression | additive-expression
+relop -> le | lt | gt | ge | eq | uneq
+additive-expression -> additive-expression addop term | term
+addop -> add | minus
+term -> term mulop factor | factor
+mulop -> mul | div | mod
+factor -> Lparen expression Rparen | variable | call | NUM
+call -> ID Lparen arguments Rparen
+arguments -> argument-list | empty
+argument-list -> argument-list comon expression | expression
+

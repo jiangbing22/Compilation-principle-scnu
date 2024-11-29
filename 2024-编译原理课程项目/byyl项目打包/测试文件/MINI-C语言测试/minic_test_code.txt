@@ -1,0 +1,23 @@
+int main() {
+    int a;
+    float b[10];
+    double c;
+
+    void exampleFunction(int x, float y) {
+        if (x > 0) {
+            a = x + 5;
+        } else {
+            a = x - 5;
+        }
+
+        do {
+            b[0] = b[0] + 1.0;
+        } while (b[0] < 10.0);
+
+        return;
+    }
+
+    exampleFunction(5, 3.14);
+
+    return 0;
+}

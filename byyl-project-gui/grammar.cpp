@@ -1,3 +1,6 @@
+// Copyright (c) 2024, 蒋昕玮
+// 保留所有权利。
+// 版本: 1.0
 #include "grammar.h"
 #include <sstream>
 #include <iostream>

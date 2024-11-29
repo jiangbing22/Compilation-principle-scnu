@@ -1,5 +1,7 @@
+// Copyright (c) 2024, 蒋昕玮
+// 保留所有权利。
+// 版本: 1.0
 #include "DFA.h"
-
 void DFA_graph::build_from_NFA(vector<NFA_graph> NFA) {
     // 合成总NFA
     unordered_map<int, string> total_NFA_endmap;
@@ -25,7 +27,6 @@ void DFA_graph::build_from_NFA(vector<NFA_graph> NFA) {
         if (closure_cache.find(stateKey) != closure_cache.end()) {
             return closure_cache[stateKey];
         }
-        // cout << "closure" << closure_num++ << endl;
         set<int> closure;
         unordered_map<int, bool> visited;
         queue<int> q;

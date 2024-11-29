@@ -1,3 +1,6 @@
+// Copyright (c) 2024, 蒋昕玮
+// 保留所有权利。
+// 版本: 1.0
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 // 函数实现
@@ -66,7 +69,7 @@ void MainWindow::on_saveButton_clicked()
 
 void MainWindow::on_generateButton_clicked()
 {
-    std::string temp = filePath.toStdString();
+    std::string temp = string(filePath.toLocal8Bit());
     LALR lalr(temp);
     printFirstMap(ui->firstEdit,lalr.G.firstMap);
     printFollowMap(ui->followEdit,lalr.G.followMap);
@@ -467,9 +470,9 @@ void MainWindow::on_gettoken_Button_clicked()
 
 void MainWindow::on_gentree_Button_clicked()
 {
-    std::string temp = filePath.toStdString();
+    std::string temp = string(filePath.toLocal8Bit());
     LALR lalr(temp);
-    auto anaProcess = lalr.Analysis(lexPath.toStdString());
+    auto anaProcess = lalr.Analysis(string(lexPath.toLocal8Bit()));
     ui->a_code_Edit->setText(QString::fromStdString(anaProcess));
     lalr.printTreeView(ui->a_treeView);
 

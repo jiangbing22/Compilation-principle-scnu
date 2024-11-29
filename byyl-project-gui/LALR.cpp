@@ -1,3 +1,6 @@
+// Copyright (c) 2024, 蒋昕玮
+// 保留所有权利。
+// 版本: 1.0
 #include "LALR.h"
 
 std::string LALR::countcore(std::unordered_set<LR1Item> itemset)
@@ -453,27 +456,11 @@ string LALR::Analysis(string filepath)
                 // 规约非空产生式，弹出相应数量的节点并作为子节点
                 for (const auto& symbol : production.right) {
                     if (!treeStack.empty()) {
-                        if (treeStack.top()->tokenString != "Lparen" &&
-                            treeStack.top()->tokenString != "Rparen" &&
-                            treeStack.top()->tokenString != "branch" &&
-                            treeStack.top()->tokenString != "Lbrace" &&
-                            treeStack.top()->tokenString != "Rbrace" &&
-                            treeStack.top()->tokenString != "comon")
-                        {
                             newNode->children.push_back(treeStack.top());
-                        }
                         treeStack.pop();
                     }
                 }
             }
-            else {
-                // 规约空产生式，可以选择添加一个特殊的子节点，或不添加任何子节点
-                // 例如，添加一个表示空的节点：
-                // auto emptyNode = make_shared<SyntaxTreeNode>("@");
-                // newNode->children.push_back(emptyNode);
-                // 或者直接不添加子节点
-            }
-
             // 将新节点压入语法树栈中
             treeStack.push(newNode);
 
@@ -490,7 +477,6 @@ string LALR::Analysis(string filepath)
                 }
             }
             // 对于空产生式，不弹出任何状态
-
             if (anaStk.empty()) {
                 resultss << "错误：状态栈为空，无法获取 GOTO。\n";
                 break;

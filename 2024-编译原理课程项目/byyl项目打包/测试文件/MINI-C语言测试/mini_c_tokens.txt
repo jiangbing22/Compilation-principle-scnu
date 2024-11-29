@@ -1,0 +1,35 @@
+letter = [a-zA-Z]
+digit = [0-9]
+_else = else
+_if = if
+_int = int 
+_float = float
+_double = double
+_return = return
+_void = void
+_while = while
+_do = do
+_mul = \*
+_div = /
+_mod = %
+_add = \+
+_minus = -
+_lt = <
+_gt = >
+_eq = =
+_le = <=
+_ge =  >=
+_uneq = !=
+_assignop = =
+_branch = ;
+_Lparen = \(
+_Rparen = \)
+_Lbracket = \[
+_Rbracket = \]
+_Lbrace = {
+_Rbrace = }
+_comon = ,
+_ID=(_|letter)((_|letter)|digit)*
+_NUM = (digit)+(.digit+)?
+_comments = //(digit|letter|(_)|( )|(\+)|(\-)|(\*)|(/)|(%)|(^)|(<)|(>)|(=)|(:)|(;)|(\()|(\)))*
+
