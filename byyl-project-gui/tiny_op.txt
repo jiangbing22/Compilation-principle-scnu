@@ -1,0 +1,13 @@
+if
+then
+end
+else
+repeat
+until
+assign-op
+read
+write
+comparison-op
+addop
+mulop
+

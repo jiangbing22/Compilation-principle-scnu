@@ -172,13 +172,13 @@ void MainWindow::on_savere_Button_clicked()
 
     // 构建 NFA
     RE regex(combinedResult.toStdString());
-    cout<<regex.get_re()<<endl;
-    cout<<regex.get_post()<<endl;
+    // cout<<regex.get_re()<<endl;
+    // cout<<regex.get_post()<<endl;
     NFA_graph NFA;
     NFA.build_NFA(regex);
 
     // 分别保存小的NFA
-    qDebug() << "save NFAs";
+    // qDebug() << "save NFAs";
     vector<NFA_graph> NFAs;
     for (auto i = results.begin(); i != results.end(); ++i)
     {
@@ -188,13 +188,13 @@ void MainWindow::on_savere_Button_clicked()
         }
         RE temp_regex(replace_re.toStdString());
         NFA_graph tempNFA;
-        qDebug() << "NFA: " <<i.key()<<" "<<replace_re;
+        // qDebug() << "NFA: " <<i.key()<<" "<<replace_re;
         tempNFA.endtype = i.key().toStdString();
         tempNFA.build_NFA(temp_regex);
         NFAs.push_back(tempNFA);
     }
     //进入局部变量
-    qDebug()<<"Create NFA";
+    // qDebug()<<"Create NFA";
     {
     // 获取 NFA 图并设置表头
     auto graph = NFA.get_graph();
@@ -472,11 +472,26 @@ void MainWindow::on_gentree_Button_clicked()
 {
     std::string temp = string(filePath.toLocal8Bit());
     LALR lalr(temp);
-    auto anaProcess = lalr.Analysis(string(lexPath.toLocal8Bit()));
+    auto anaProcess = lalr.Analysis(string(lexPath.toLocal8Bit()),string(opPath.toLocal8Bit()));
     ui->a_code_Edit->setText(QString::fromStdString(anaProcess));
     lalr.printTreeView(ui->a_treeView);
 
 }
 
 
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    opPath = QFileDialog::getOpenFileName(this, "Save File", QString(), "text File (*.txt)");
+    if (!opPath.isEmpty()) {
+        QFile file(opPath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            ui->a_code_Edit->setText(in.readAll());
+            file.close();
+        }
+    }
+
+}
 

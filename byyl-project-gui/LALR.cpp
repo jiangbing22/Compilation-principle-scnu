@@ -261,7 +261,7 @@ void LALR::createLALRAutomaton() {
                     currentNode->state[symbol] = newNode; // 设置当前状态到新节点的转移
 
                     newNode->stateNum = stateNum++; // 新状态编号
-                    std::cout << "Created new state: " << newNode->stateNum << " with core: " << newCore << std::endl;
+                    // std::cout << "Created new state: " << newNode->stateNum << " with core: " << newCore << std::endl;
                 } else {
                     // 如果该核心已经存在，则合并状态
                     auto existingNode = coreMap[newCore];
@@ -272,11 +272,11 @@ void LALR::createLALRAutomaton() {
                     }
                     currentNode->state[symbol] = existingNode; // 更新转移到已有节点
 
-                    std::cout << "Merged with existing state: " << existingNode->stateNum << " for core: " << newCore << std::endl;
+                    // std::cout << "Merged with existing state: " << existingNode->stateNum << " for core: " << newCore << std::endl;
                 }
             } else {
                 // 如果新状态为空，则跳过
-                std::cout << "Skipped empty new state for symbol: " << symbol << std::endl;
+                // std::cout << "Skipped empty new state for symbol: " << symbol << std::endl;
             }
         }
     }
@@ -358,13 +358,16 @@ LALR::LALR(const std::string filepath) : G(filepath), head(nullptr) {
 //每个单词都要以string+type的形式存在
 //做移进或规约时候输出操作数据——需要 tokentype tokenstring
 //需要编写处理函数，把源代码处理成上述结构
-string LALR::Analysis(string filepath)
+string LALR::Analysis(string filepath,string operatorpath)
 {
+    set<string> separatorSet={"Lparen","Rparen","Lbrace","Rbrace","comon","branch"};
+
+
     stringstream resultss; // 使用 stringstream 记录结果日志
     ifstream infile(filepath);
     vector<pair<string, string>> tokens;
 
-    // 词法分析
+    // 打开词法分析文件
     if (infile.is_open()) {
         string sentence;
         while (getline(infile, sentence)) {
@@ -381,7 +384,25 @@ string LALR::Analysis(string filepath)
     else {
         return "无法打开文件。";
     }
-
+    infile.close();
+    //打开语义运算符文件，并创建运算符
+    set<string> operatorSet;
+    ifstream opFile(operatorpath);
+    if (opFile.is_open()) {
+        string op;
+        while (getline(opFile, op)) {
+            cout<<"operator:"<<op<<endl;
+            operatorSet.insert(op);
+        }
+    }
+    else {
+        return "无法打开文件。";
+    }
+    opFile.close();
+    for(auto i:operatorSet)
+    {
+        cout<<"operator:"<<i<<endl;
+    }
     // 初始化解析变量
     tokens.emplace_back(make_pair("$", "END_C")); // 添加结束符
     stack<AI> anaStk; // 状态栈
@@ -449,19 +470,99 @@ string LALR::Analysis(string filepath)
             }
 
             // 创建语法树节点
-            auto newNode = make_shared<SyntaxTreeNode>(production.left);
-            newNode->tokenString = production.left; // 当前产生式左部
-
-            if (!isEmptyProduction) {
-                // 规约非空产生式，弹出相应数量的节点并作为子节点
-                for (const auto& symbol : production.right) {
-                    if (!treeStack.empty()) {
-                            newNode->children.push_back(treeStack.top());
-                        treeStack.pop();
-                    }
+            auto newNode = make_shared<SyntaxTreeNode>("@");
+            int opcount = 0;
+            for(auto i:production.right)
+            {
+                if(operatorSet.find(i)!=operatorSet.end())
+                {
+                    opcount++;
                 }
             }
-            // 将新节点压入语法树栈中
+            vector<string> realproduction;
+            for(int i = production.right.size()-1;i>=0;i--)
+             {
+                 if(separatorSet.find(production.right[i])==separatorSet.end())
+                {
+                    realproduction.push_back(production.right[i]);
+                }
+             }
+
+            if (!isEmptyProduction) {
+                switch(opcount)
+                {
+                case 0:
+                    if(realproduction.size()==1)
+                    {
+                        for(auto i:production.right)
+                        {
+                            if(separatorSet.find(i)==separatorSet.end())
+                            {
+                                newNode=treeStack.top();
+                            }
+                            treeStack.pop();
+                        }
+                    }
+                    else
+                    {
+                        newNode->tokenString=production.left;
+                        for(auto i:production.right)
+                        {
+                            if(separatorSet.find(i)==separatorSet.end()&&treeStack.top()->tokenString!=";")
+                            {
+                            newNode->children.push_back(treeStack.top());
+                            }
+                            treeStack.pop();
+                        }
+                    }
+                    break;
+                case 1:
+                    // 规约非空产生式，弹出相应数量的节点并作为子节点
+                    for (int i = production.right.size()-1;i>=0;i--) {
+                        auto symbol = production.right[i];
+                        if (!treeStack.empty()) {
+                            if(operatorSet.find(symbol)==operatorSet.end())
+                            {
+                                if(separatorSet.find(production.right[i])==separatorSet.end()){
+                                newNode->children.push_back(treeStack.top());
+                                }
+                            }
+                            else
+                            {
+                                auto tempnode= newNode;
+                                newNode = treeStack.top();
+                                for(auto j:tempnode->children)
+                                {
+                                    newNode->children.push_back(j);
+                                }
+                            }
+                            treeStack.pop();
+                        }
+                    }
+                    break;
+                default:
+                    string opstring;
+                    for (int i = production.right.size()-1;i>=0;i--) {
+                        auto symbol = production.right[i];
+                        if (!treeStack.empty()) {
+                            if(operatorSet.find(symbol)==operatorSet.end())
+                            {
+                                if(separatorSet.find(production.right[i])==separatorSet.end()){
+                                newNode->children.push_back(treeStack.top());
+                                }
+                            }
+                            else
+                            {
+                                opstring = treeStack.top()->tokenString +" "+ opstring ;
+                            }
+                            treeStack.pop();
+                        }
+
+                    }
+                    newNode->tokenString=opstring;
+                    break;
+                }
+            }
             treeStack.push(newNode);
 
             if (!isEmptyProduction) {
@@ -508,7 +609,7 @@ string LALR::Analysis(string filepath)
         else if (act == "accept") {
             resultss << "接受输入\n";
             if (!treeStack.empty()) {
-                syntaxTreeRoot = treeStack.top(); // 获取语法树根节点
+                syntaxTreeRoot = treeStack.top();
                 treeStack.pop();
             }
             break;

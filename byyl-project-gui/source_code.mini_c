@@ -33,5 +33,5 @@ int main(void)
         c=3;
         b[2] =b[2] + 4;
     } while (b[2] < 10);
-    return ;
+    return 0;
 }

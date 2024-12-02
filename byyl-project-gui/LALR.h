@@ -153,7 +153,7 @@ public:
     LALR(const std::string filepath);
 
     // 解析函数，分析输入文件
-    string Analysis(std::string filepath);
+    string Analysis(std::string filepath,string operatorpath);
 
     // 打印语法树的函数
     void printSyntaxTree(const std::shared_ptr<SyntaxTreeNode>& node, std::stringstream& ss, int depth);

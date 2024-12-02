@@ -1,0 +1,12 @@
+type-indicator
+Lbracket
+Rbracket
+while
+if
+else
+do
+return
+assignop
+relop
+addop
+mulop

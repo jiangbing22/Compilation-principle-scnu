@@ -56,6 +56,8 @@ private slots:
     void on_gettoken_Button_clicked();  // 获取token按钮事件
     void on_gentree_Button_clicked();   // 生成语法树按钮事件
 
+    void on_pushButton_2_clicked();
+
 private:
     // UI组件
     Ui::MainWindow *ui;
@@ -65,7 +67,7 @@ private:
     QString sytanxCodePath;  // 语法代码文件路径
     QString codePath;  // 代码文件路径
     QString lexPath;   // 词法分析文件路径
-
+    QString opPath; //语法分析运算符文件路径
     // 辅助函数，将vector<int>转换为QString
     QString vectorToQString(const std::vector<int> &vec);
 };
